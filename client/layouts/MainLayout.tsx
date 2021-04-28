@@ -1,12 +1,18 @@
 import React from 'react'
 import Head from 'next/head'
 
+import Header from '../components/Header'
+
+import Layout from 'antd/lib/layout'
+
 interface IMainLayoutProps {
   children: React.ReactNode
   title?: string
   description?: string
   keywords?: string
 }
+
+const { Content } = Layout
 
 const MainLayout: React.FC<IMainLayoutProps> = ({ children, title, description, keywords }) => {
   return (
@@ -19,7 +25,12 @@ const MainLayout: React.FC<IMainLayoutProps> = ({ children, title, description, 
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {children}
+      <Layout className="layout">
+        <Header />
+        <Content className="main">
+          {children}
+        </Content>
+      </Layout>
     </>
   )
 }
