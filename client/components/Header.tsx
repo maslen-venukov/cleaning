@@ -3,13 +3,14 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { sendBackCall } from '../store/actions/backCalls'
+
 import Layout from 'antd/lib/layout'
 import Menu from 'antd/lib/menu'
 import Modal from 'antd/lib/modal'
 import Form from 'antd/lib/form'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
-import message from 'antd/lib/message'
 import HomeOutlined from '@ant-design/icons/HomeOutlined'
 import InfoCircleOutlined from '@ant-design/icons/InfoCircleOutlined'
 import DollarOutlined from '@ant-design/icons/DollarOutlined'
@@ -23,6 +24,11 @@ interface IMenuItem {
   href?: string
   key: string
   icon: any
+}
+
+interface IModalFormValues {
+  name: string
+  phone: string
 }
 
 const Header: React.FC = () => {
@@ -53,9 +59,9 @@ const Header: React.FC = () => {
     setModalVisible(true)
   }
 
-  const onModalFormFinish = values => {
-    console.log(values)
-    message.success('Заявка успешно отправлена')
+  const onModalFormFinish = (values: IModalFormValues) => {
+    const { name, phone } = values
+    sendBackCall(name, phone)
     form.resetFields()
     setModalVisible(false)
   }

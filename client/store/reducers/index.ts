@@ -1,10 +1,12 @@
 import { HYDRATE } from 'next-redux-wrapper'
 import { combineReducers } from 'redux'
 
-import track from './track'
+import backCalls from './backCalls'
+import loading from './loading'
 
 const rootReducer = combineReducers({
-  track
+  backCalls,
+  loading
 })
 
 export const reducer = (state, action) => {

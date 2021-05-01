@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import BackCall, { IBackCall } from '../models/BackCall'
+import BackCall from '../models/BackCall'
 
 import errorHandler from '../utils/errorHandler'
 
@@ -11,7 +11,6 @@ class backCallsController {
   async getAll(req: IUserRequest, res: Response): Promise<Response> {
     try {
       const backCalls = await BackCall.find()
-      console.log(backCalls.map(b => b.date))
       return res.json(backCalls)
     } catch (e) {
       console.log(e)
@@ -23,7 +22,7 @@ class backCallsController {
     try {
       const { name, phone } = req.body
 
-      if(!name || !phone) {
+      if(!name.trim() || !phone.trim()) {
         return errorHandler(res, HTTPStatusCodes.BadRequest, 'Заполните все поля')
       }
 
