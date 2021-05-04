@@ -1,4 +1,6 @@
 import React from 'react'
+import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
 
 import Row from 'antd/lib/row'
 import Col from 'antd/lib/grid/col'
@@ -6,28 +8,39 @@ import Form from 'antd/lib/form'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 
-// TODO доделать авторизацию на клиенте
-// TODO сделать отображение backcalls
+import { logIn } from '../store/actions/user'
+
+interface ILoginFormValues {
+  login: string
+  password: string
+}
 
 const Login: React.FC = () => {
+  const dispatch = useDispatch()
+  const router = useRouter()
+
   const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
+    fields: {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 16 }
+    },
+    button: {
+      wrapperCol: { offset: 4, span: 16 }
+    }
   }
 
-  const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
+  const onLoginFormFinish = (values: ILoginFormValues) => {
+    const { login, password } = values
+    const redirect = () => router.push('/admin')
+    dispatch(logIn(login, password, redirect))
   }
 
   return (
     <Row justify="center" align="middle" className="login">
-      <Col span={12}>
+      <Col xs={20} sm={16} md={12} lg={8}>
         <Form
-        {...layout}
-          name="basic"
-          initialValues={{ remember: true }}
-          onFinish={() => ({})}
-          onFinishFailed={() => ({})}
+          {...layout.fields}
+          onFinish={onLoginFormFinish}
         >
           <Form.Item
             label="Логин"
@@ -45,7 +58,7 @@ const Login: React.FC = () => {
             <Input.Password />
           </Form.Item>
 
-          <Form.Item {...tailLayout}>
+          <Form.Item {...layout.button}>
             <Button type="primary" htmlType="submit">
               Войти
             </Button>

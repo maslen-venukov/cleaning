@@ -3,10 +3,12 @@ import { combineReducers } from 'redux'
 
 import backCalls from './backCalls'
 import loading from './loading'
+import user from './user'
 
 const rootReducer = combineReducers({
   backCalls,
-  loading
+  loading,
+  user
 })
 
 export const reducer = (state, action) => {

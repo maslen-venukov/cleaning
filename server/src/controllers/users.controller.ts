@@ -79,7 +79,7 @@ class UsersController {
 
       return res.json({
         token,
-        user: { _id, login }
+        currentUser: { _id, login }
       })
     } catch (e) {
       console.log(e)
@@ -96,7 +96,7 @@ class UsersController {
 
       return res.json({
         token,
-        user: {
+        currentUser: {
           _id: user._id,
           login
         }

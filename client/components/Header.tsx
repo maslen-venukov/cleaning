@@ -48,7 +48,7 @@ const Header: React.FC = () => {
   const [form] = Form.useForm()
 
   useEffect(() => {
-    const page = router.pathname.toString().slice(1)
+    const page = router.pathname.slice(1)
     setCurrent(page || 'home')
   }, [])
 
@@ -81,16 +81,16 @@ const Header: React.FC = () => {
 
       <Menu mode="horizontal" onClick={onMenuClick} selectedKeys={[current]}>
         {menu.map((item: IMenuItem) => (
-            <Menu.Item key={item.key} icon={item.icon.render()}>
-              {item.href ? (
-                <Link href={item.href}>
-                  <a>{item.label}</a>
-                </Link>
-              ) : (
-                <>{item.label}</>
-              )}
-            </Menu.Item>
-          ))}
+          <Menu.Item key={item.key} icon={item.icon.render()}>
+            {item.href ? (
+              <Link href={item.href}>
+                <a>{item.label}</a>
+              </Link>
+            ) : (
+              <>{item.label}</>
+            )}
+          </Menu.Item>
+        ))}
       </Menu>
 
       <Modal

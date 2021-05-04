@@ -8,9 +8,9 @@ import { HTTPStatusCodes } from '../types'
 import { IUserRequest } from '../models/User'
 
 class backCallsController {
-  async getAll(req: IUserRequest, res: Response): Promise<Response> {
+  async getAll(req: Request, res: Response): Promise<Response> {
     try {
-      const backCalls = await BackCall.find()
+      const backCalls = await BackCall.find().sort({ _id: -1 })
       return res.json(backCalls)
     } catch (e) {
       console.log(e)
@@ -36,6 +36,30 @@ class backCallsController {
         phone
       })
 
+      await backCall.save()
+      return res.json(backCall)
+    } catch (e) {
+      console.log(e)
+      return errorHandler(res)
+    }
+  }
+
+  async remove(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params
+      await BackCall.deleteOne({ _id: id })
+      return res.json({ message: 'Заявка успешно удалена' })
+    } catch (e) {
+      console.log(e)
+      return errorHandler(res)
+    }
+  }
+
+  async process(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params
+      const backCall = await BackCall.findById(id)
+      backCall.isProcessed = !backCall.isProcessed
       await backCall.save()
       return res.json(backCall)
     } catch (e) {

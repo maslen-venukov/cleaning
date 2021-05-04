@@ -9,7 +9,9 @@ export interface IBackCall {
 }
 
 export enum BackCallsActionTypes {
-  SET_BACK_CALLS = 'SET_BACK_CALLS'
+  SET_BACK_CALLS = 'SET_BACK_CALLS',
+  REMOVE_BACK_CALL = 'REMOVE_BACK_CALL',
+  PROCESS_BACK_CALL = 'PROCESS_BACK_CALL'
 }
 
 export type BackCallsState = IBackCall[]
@@ -19,4 +21,17 @@ interface ISetBackCalls extends IAction {
   payload: IBackCall[]
 }
 
-export type BackCallsAction = ISetBackCalls
+interface IRemoveBackCall extends IAction {
+  type: BackCallsActionTypes.REMOVE_BACK_CALL,
+  payload: string
+}
+
+interface IProcessBackCall extends IAction {
+  type: BackCallsActionTypes.PROCESS_BACK_CALL,
+  payload: {
+    id: string,
+    isProcessed: boolean
+  }
+}
+
+export type BackCallsAction = ISetBackCalls | IRemoveBackCall | IProcessBackCall

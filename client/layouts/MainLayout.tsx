@@ -5,14 +5,14 @@ import Header from '../components/Header'
 
 import Layout from 'antd/lib/layout'
 
+const { Content } = Layout
+
 interface IMainLayoutProps {
   children: React.ReactNode
   title?: string
   description?: string
   keywords?: string
 }
-
-const { Content } = Layout
 
 const MainLayout: React.FC<IMainLayoutProps> = ({ children, title, description, keywords }) => {
   return (

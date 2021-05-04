@@ -7,5 +7,7 @@ const router = Router()
 
 router.get('/', auth, controller.getAll)
 router.post('/', controller.create)
+router.put('/process/:id', auth, controller.process)
+router.delete('/:id', auth, controller.remove)
 
 export default router
