@@ -8,6 +8,7 @@ import connectDB from './core/db'
 
 import usersRouter from './routes/users.route'
 import backCallsRouter from './routes/backCalls.route'
+import reviewsRouter from './routes/reviews.route'
 
 const PORT = process.env.PORT || 5000
 const MONGO_URI = process.env.MONGO_URI
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/users', usersRouter)
 app.use('/api/back-calls', backCallsRouter)
+app.use('/api/reviews', reviewsRouter)
 
 const start = async () => {
   try {

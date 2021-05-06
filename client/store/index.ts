@@ -10,6 +10,6 @@ const makeStore: MakeStore<RootState> = (context: Context) => createStore(
   composeWithDevTools(applyMiddleware(thunk))
 )
 
-export const wrapper = createWrapper<RootState>(makeStore, {debug: true})
+export const wrapper = createWrapper<RootState>(makeStore, { debug: true })
 
 export type NextThunkDispatch = ThunkDispatch<RootState, void, AnyAction>

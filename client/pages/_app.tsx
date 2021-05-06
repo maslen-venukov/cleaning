@@ -31,11 +31,11 @@ const WrappedApp: React.FC<AppProps> = ({ Component, pageProps }) => {
 
   useEffect(() => {
     if(router.pathname.includes('admin') && isReady && !currentUser) {
-      router.push('/')
+      router.push('/login')
     }
   }, [isReady, currentUser])
 
-  return isReady && <Component {...pageProps} />
+  return <Component {...pageProps} />
 }
 
 export default wrapper.withRedux(WrappedApp)

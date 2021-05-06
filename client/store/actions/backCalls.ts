@@ -2,10 +2,7 @@ import { Dispatch } from 'react'
 import axios from 'axios'
 import message from 'antd/lib/message'
 
-import { setLoading } from './loading'
-
-import { IBackCall, BackCallsAction, BackCallsActionTypes } from '../../types/backCalls'
-import { LoadingAction } from '../../types/loading'
+import { IBackCall, BackCallsAction, BackCallsActionTypes, IProcessBackCallPayload } from '../../types/backCalls'
 
 const setBackCalls = (payload: IBackCall[]): BackCallsAction => ({
   type: BackCallsActionTypes.SET_BACK_CALLS,
@@ -17,19 +14,17 @@ const removeBackCall = (payload: string): BackCallsAction => ({
   payload
 })
 
-const processBackCall = (payload: { id: string, isProcessed: boolean }): BackCallsAction => ({
+const processBackCall = (payload: IProcessBackCallPayload): BackCallsAction => ({
   type: BackCallsActionTypes.PROCESS_BACK_CALL,
   payload
 })
 
-export const fetchBackCalls = (token: string) => (dispatch: Dispatch<BackCallsAction | LoadingAction>) => {
-  dispatch(setLoading(true))
+export const fetchBackCalls = (token: string) => (dispatch: Dispatch<BackCallsAction>) => {
   axios.get('/api/back-calls', {
     headers: { Authorization: token }
   })
     .then(({ data }) => dispatch(setBackCalls(data)))
     .catch(e => message.error(e.response.data.message))
-    .finally(() => dispatch(setLoading(false)))
 }
 
 export const sendBackCall = (name: string, phone: string) => {

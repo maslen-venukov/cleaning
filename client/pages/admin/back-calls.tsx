@@ -10,8 +10,10 @@ import Drawer from 'antd/lib/drawer'
 import Button from 'antd/lib/button'
 import Space from 'antd/lib/space'
 import Popconfirm from 'antd/lib/popconfirm'
+import Empty from 'antd/lib/empty'
 
 import getDateTime from '../../utils/getDateTime'
+import emptyLocale from '../../utils/emptyLocale'
 
 import { fetchBackCalls, fetchRemoveBackCall, fetchProcessBackCall } from '../../store/actions/backCalls'
 
@@ -22,7 +24,7 @@ const BackCalls: React.FC = () => {
   const dispatch = useDispatch()
 
   const token = useSelector((state: RootState) => state.user.token)
-  const { backCalls, loading } = useSelector((state: RootState) => state)
+  const { backCalls } = useSelector((state: RootState) => state.backCalls)
 
   const [isDrawerVisible, setDrawerVisible] = useState<boolean>(false)
 
@@ -37,7 +39,6 @@ const BackCalls: React.FC = () => {
   }, [])
 
   const onRemove = (id: string) => dispatch(fetchRemoveBackCall(id, token))
-
   const onProcess = (id: string) => dispatch(fetchProcessBackCall(id, token))
 
   return (
@@ -45,7 +46,8 @@ const BackCalls: React.FC = () => {
       <Table
         dataSource={backCalls}
         rowKey={(record: IBackCall) => record._id}
-        loading={loading}
+        locale={emptyLocale}
+        // loading={loading}
       >
         <Column title="Имя" dataIndex="name" key="name" />
         <Column title="Телефон" dataIndex="phone" key="phone" />
@@ -91,5 +93,6 @@ const BackCalls: React.FC = () => {
     </AdminLayout>
   )
 }
+
 
 export default BackCalls

@@ -17,6 +17,7 @@ $shadow: 0 2px 6px rgba(#000, .1)
   position: fixed
   top: 0
   left: 0
+  z-index: 100
   width: 100vw
   display: flex
   align-items: center
@@ -36,11 +37,13 @@ $shadow: 0 2px 6px rgba(#000, .1)
 .main
   padding-top: 64px
 
-.home
+.intro
   position: relative
   text-align: center
   height: calc(100vh - 64px)
-  background: url('../public/intro.jpg') center / cover no-repeat
+  background-position: center
+  background-size: cover
+  background-repeat: no-repeat
   padding-bottom: 10vh
   &::after
     content: ''
@@ -61,3 +64,14 @@ $shadow: 0 2px 6px rgba(#000, .1)
 .login
   width: 100vw
   min-height: 100vh
+
+.admin
+  &__header
+    padding: 0 15px
+    background-color: #fff
+  &__logo
+    display: flex
+    align-items: center
+    transform: scale(-1, 1)
+  &__content
+    padding: 15px

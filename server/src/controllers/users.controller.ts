@@ -45,7 +45,7 @@ class UsersController {
       const token = `Bearer ${jwt.sign({ _id, login }, SECRET_KEY, { expiresIn: '1h' })}`
 
       await user.save()
-      return res.status(201).json({
+      return res.status(HTTPStatusCodes.Created).json({
         token,
         user: { _id, login },
         message: 'Пользователь успешно зарегистрирован'

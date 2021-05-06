@@ -2,19 +2,16 @@ import React from 'react'
 
 import MainLayout from '../layouts/MainLayout'
 
-import Row from 'antd/lib/row'
-import Col from 'antd/lib/col'
-import Typography from 'antd/lib/typography'
+import Intro from '../components/Intro'
 
 const Home: React.FC = () => {
   return (
     <MainLayout>
-      <Row align="middle" className="home">
-        <Col span={24}>
-          <Typography.Title>Клининговые услуги</Typography.Title>
-          <Typography.Title level={2}>Доверьте уборку профессионалам</Typography.Title>
-        </Col>
-      </Row>
+      <Intro
+        title="Клининговые услуги"
+        subtitle="Доверьте уборку профессионалам"
+        backgroundImage="intro.jpg"
+      />
     </MainLayout>
   )
 }

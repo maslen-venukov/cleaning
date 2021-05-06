@@ -3,9 +3,9 @@ import { Request, Response } from 'express'
 import BackCall from '../models/BackCall'
 
 import errorHandler from '../utils/errorHandler'
+import isValidObjectId from '../utils/isValidObjectId'
 
 import { HTTPStatusCodes } from '../types'
-import { IUserRequest } from '../models/User'
 
 class backCallsController {
   async getAll(req: Request, res: Response): Promise<Response> {
@@ -37,7 +37,7 @@ class backCallsController {
       })
 
       await backCall.save()
-      return res.json(backCall)
+      return res.status(HTTPStatusCodes.Created).json(backCall)
     } catch (e) {
       console.log(e)
       return errorHandler(res)
@@ -47,6 +47,11 @@ class backCallsController {
   async remove(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params
+
+      if(!isValidObjectId(id)) {
+        return errorHandler(res, HTTPStatusCodes.BadRequest, 'Некорректный id')
+      }
+
       await BackCall.deleteOne({ _id: id })
       return res.json({ message: 'Заявка успешно удалена' })
     } catch (e) {
@@ -58,7 +63,17 @@ class backCallsController {
   async process(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params
+
+      if(!isValidObjectId(id)) {
+        return errorHandler(res, HTTPStatusCodes.BadRequest, 'Некорректный id')
+      }
+
       const backCall = await BackCall.findById(id)
+
+      if(!backCall) {
+        return errorHandler(res, HTTPStatusCodes.NotFound, 'Заявка не найдена')
+      }
+
       backCall.isProcessed = !backCall.isProcessed
       await backCall.save()
       return res.json(backCall)
