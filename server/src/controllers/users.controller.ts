@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
-import User, { IUserRequest } from '../models/User'
+import User, { IUser, IUserRequest } from '../models/User'
 
 import errorHandler from '../utils/errorHandler'
 
@@ -13,9 +13,10 @@ const SECRET_KEY = process.env.SECRET_KEY
 class UsersController {
   async register(req: Request, res: Response): Promise<Response> {
     try {
-      const { login, password, passwordCheck } = req.body
+      const { login, password }: IUser = req.body
+      const { passwordCheck } = req.body
 
-      if(!login || !password || !passwordCheck) {
+      if(!login.trim() || !password.trim() || !passwordCheck.trim()) {
         return errorHandler(res, HTTPStatusCodes.BadRequest, 'Заполните все поля')
       }
 
@@ -58,9 +59,9 @@ class UsersController {
 
   async login(req: Request, res: Response): Promise<Response> {
     try {
-      const { login, password } = req.body
+      const { login, password }: IUser = req.body
 
-      if(!login || !password)
+      if(!login.trim() || !password.trim())
         return errorHandler(res, HTTPStatusCodes.BadRequest, 'Заполните все поля' )
 
       const user = await User.findOne({ login })

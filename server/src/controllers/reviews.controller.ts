@@ -1,19 +1,18 @@
 import { Request, Response } from 'express'
 
-import Review from '../models/Review'
-import { IUserRequest } from '../models/User'
+import Review, { IReview } from '../models/Review'
 
 import errorHandler from '../utils/errorHandler'
+import isValidObjectId from '../utils/isValidObjectId'
 
 import { HTTPStatusCodes } from '../types'
-import isValidObjectId from '../utils/isValidObjectId'
 
 class reviewsController {
   async create(req: Request, res: Response): Promise<Response> {
     try {
-      const { name, text } = req.body
+      const { name, text }: IReview = req.body
 
-      if(!name || !text) {
+      if(!name.trim() || !text.trim()) {
         return errorHandler(res, HTTPStatusCodes.BadRequest, 'Заполните все поля')
       }
 
@@ -64,7 +63,7 @@ class reviewsController {
         return errorHandler(res, HTTPStatusCodes.NotFound, 'Отзыв не найден')
       }
 
-      const { name, text, isProcessed } = req.body
+      const { name, text, isProcessed }: IReview = req.body
 
       review.name = name || review.name
       review.text = text || review.text
@@ -86,7 +85,13 @@ class reviewsController {
         return errorHandler(res, HTTPStatusCodes.BadRequest, 'Некорректный id')
       }
 
-      await Review.deleteOne({ _id: id })
+      const review = await Review.findById(id)
+
+      if(!review) {
+        return errorHandler(res, HTTPStatusCodes.NotFound, 'Отзыв не найден')
+      }
+
+      await review.deleteOne()
       return res.json({ message: 'Отзыв успешно удален' })
     } catch (e) {
       console.log(e)

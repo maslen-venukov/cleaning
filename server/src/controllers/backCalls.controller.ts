@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import BackCall from '../models/BackCall'
+import BackCall, { IBackCall } from '../models/BackCall'
 
 import errorHandler from '../utils/errorHandler'
 import isValidObjectId from '../utils/isValidObjectId'
@@ -20,7 +20,7 @@ class backCallsController {
 
   async create(req: Request, res: Response): Promise<Response> {
     try {
-      const { name, phone } = req.body
+      const { name, phone }: IBackCall = req.body
 
       if(!name.trim() || !phone.trim()) {
         return errorHandler(res, HTTPStatusCodes.BadRequest, 'Заполните все поля')
@@ -52,7 +52,13 @@ class backCallsController {
         return errorHandler(res, HTTPStatusCodes.BadRequest, 'Некорректный id')
       }
 
-      await BackCall.deleteOne({ _id: id })
+      const backCall = await BackCall.findById(id)
+
+      if(!backCall) {
+        return errorHandler(res, HTTPStatusCodes.NotFound, 'Заявка не найдена')
+      }
+
+      await backCall.deleteOne()
       return res.json({ message: 'Заявка успешно удалена' })
     } catch (e) {
       console.log(e)

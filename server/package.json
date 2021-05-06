@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node build/index.js",
     "dev": "nodemon src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "seed": "nodemon src/seed/seed.ts"
   },
   "dependencies": {
     "@types/multer": "^1.4.5",

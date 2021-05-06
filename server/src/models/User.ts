@@ -1,7 +1,7 @@
 import { model, Schema, Document } from 'mongoose'
 import { Request } from 'express'
 
-interface IUser {
+export interface IUser {
   _id?: string
   login: string
   password: string
