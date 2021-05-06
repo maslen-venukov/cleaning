@@ -7,6 +7,7 @@ import axios from 'axios'
 import { wrapper } from '../store'
 
 import { auth, setReady } from '../store/actions/user'
+import { fetchMainServices } from '../store/actions/services'
 
 import { RootState } from '../store/reducers'
 
@@ -27,6 +28,10 @@ const WrappedApp: React.FC<AppProps> = ({ Component, pageProps }) => {
     } else {
       dispatch(setReady())
     }
+  }, [])
+
+  useEffect(() => {
+    dispatch(fetchMainServices())
   }, [])
 
   useEffect(() => {

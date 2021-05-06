@@ -8,7 +8,6 @@ import Layout from 'antd/lib/layout'
 const { Content } = Layout
 
 interface IMainLayoutProps {
-  children: React.ReactNode
   title?: string
   description?: string
   keywords?: string

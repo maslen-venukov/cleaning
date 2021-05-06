@@ -14,17 +14,15 @@ import {
   MenuFoldOutlined,
   PhoneOutlined,
   CalculatorOutlined,
-  PictureOutlined, LikeOutlined,
-  SolutionOutlined }
+  PictureOutlined,
+  LikeOutlined,
+  SolutionOutlined,
+  DollarOutlined }
 from '@ant-design/icons'
 
 import { RootState } from '../store/reducers'
 
 const { Sider, Header, Content } = Layout
-
-interface IAdminLayoutProps {
-  children: React.ReactNode
-}
 
 interface IMenuItem {
   label: string
@@ -33,8 +31,9 @@ interface IMenuItem {
   icon: any
 }
 
-const AdminLayout: React.FC<IAdminLayoutProps> = ({ children }) => {
+const AdminLayout: React.FC = ({ children }) => {
   const menu: IMenuItem[] = [
+    { label: 'Услуги', href: '/admin/services', key: 'services', icon: DollarOutlined },
     { label: 'Обратные звонки', href: '/admin/back-calls', key: 'back-calls', icon: PhoneOutlined },
     { label: 'Заявки (калькулятор)', href: '/admin/requests', key: 'requests', icon: CalculatorOutlined },
     { label: 'Заявки (фото)', href: '/admin/photo', key: 'photo', icon: PictureOutlined },

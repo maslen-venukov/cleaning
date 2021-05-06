@@ -37,7 +37,7 @@ const Login: React.FC = () => {
 
   return (
     <Row justify="center" align="middle" className="login">
-      <Col xs={20} sm={16} md={12} lg={8}>
+      <Col lg={8} md={12} sm={16} xs={20}>
         <Form
           {...layout.fields}
           onFinish={onLoginFormFinish}

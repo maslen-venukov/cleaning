@@ -1,44 +1,22 @@
-import { IReviewsState, ReviewsAction, ReviewsActionTypes } from '../../types/reviews'
+import { ReviewsState, ReviewsAction, ReviewsActionTypes } from '../../types/reviews'
 
-const initialState: IReviewsState = {
-  reviews: [],
-  error: ''
-}
+const initialState: ReviewsState = []
 
-const reviews = (state = initialState, action: ReviewsAction): IReviewsState => {
+const reviews = (state = initialState, action: ReviewsAction): ReviewsState => {
   switch(action.type) {
     case ReviewsActionTypes.SET_REVIEWS:
-      return {
-        ...state,
-        reviews: action.payload
-      }
+      return action.payload
 
-    case ReviewsActionTypes.UPDATE_REVIEW: {
+    case ReviewsActionTypes.UPDATE_REVIEW:
       const { id, data } = action.payload
-      const reviews = state.reviews.map(review => {
+      return state.map(review => {
         return review._id === id
           ? { ...review, ...data }
           : review
       })
-      return {
-        ...state,
-        reviews
-      }
-    }
 
-    case ReviewsActionTypes.REMOVE_REVIEW: {
-      const reviews = state.reviews.filter(review => review._id !== action.payload)
-      return {
-        ...state,
-        reviews
-      }
-    }
-
-    case ReviewsActionTypes.SET_REVIEWS_ERROR:
-      return {
-        ...state,
-        error: action.payload
-      }
+    case ReviewsActionTypes.REMOVE_REVIEW:
+      return state.filter(review => review._id !== action.payload)
 
     default:
       return state

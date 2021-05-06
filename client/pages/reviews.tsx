@@ -4,7 +4,7 @@ import message from 'antd/lib/message'
 
 import MainLayout from '../layouts/MainLayout'
 
-import Intro from '../components/Intro'
+import Hero from '../components/Hero'
 
 import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
@@ -14,30 +14,37 @@ import Comment from 'antd/lib/comment'
 import getDateTime from '../utils/getDateTime'
 import emptyLocale from '../utils/emptyLocale'
 
-import { IReviewsState, IReview } from '../types/reviews'
+import { IReview } from '../types/reviews'
 
-interface IReviewsProps {
-  data: IReviewsState
+interface IReviewsData {
+  reviews: IReview[]
+  error: string
 }
 
-// TODO сделать обработку отзывов в админке
+interface IReviewsProps {
+  data: IReviewsData
+}
+
 // TODO сделать добавление заказа
+// TODO сделать добавление отзыва
+// TODO сделать калькулятор
 
 const Reviews: React.FC<IReviewsProps> = ({ data }) => {
   useEffect(() => {
-    if(data.error) {
-      message.error(data.error)
+    const { error } = data
+    if(error) {
+      message.error(error)
     }
   }, [data.error])
 
   return (
     <MainLayout title="Отзывы">
-      {/* <Intro
+      <Hero
         title="Отзывы наших клиентов"
         backgroundImage="reviews.jpg"
-      /> */}
+      />
       {!data.error && (
-        <Row justify="center" style={{ paddingTop: 15 }}>
+        <Row justify="center">
           <Col span={12}>
             <List
               header="Список отзывов"
@@ -62,7 +69,7 @@ const Reviews: React.FC<IReviewsProps> = ({ data }) => {
 }
 
 export const getServerSideProps = async () => {
-  const data: IReviewsState = {
+  const data: IReviewsData = {
     reviews: [],
     error: ''
   }

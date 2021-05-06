@@ -22,11 +22,6 @@ const removeReview = (payload: string): ReviewsAction => ({
   payload
 })
 
-export const setReviewsError = (payload: string): ReviewsAction => ({
-  type: ReviewsActionTypes.SET_REVIEWS_ERROR,
-  payload
-})
-
 export const fetchReviews = () => (dispatch: Dispatch<ReviewsAction | LoadingAction>) => {
   dispatch(setLoading(true))
   axios.get('/api/reviews/processed')

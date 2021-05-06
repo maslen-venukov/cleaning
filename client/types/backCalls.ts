@@ -11,14 +11,10 @@ export interface IBackCall {
 export enum BackCallsActionTypes {
   SET_BACK_CALLS = 'SET_BACK_CALLS',
   REMOVE_BACK_CALL = 'REMOVE_BACK_CALL',
-  PROCESS_BACK_CALL = 'PROCESS_BACK_CALL',
-  SET_BACK_CALLS_ERROR = 'SET_BACK_CALLS_ERROR'
+  PROCESS_BACK_CALL = 'PROCESS_BACK_CALL'
 }
 
-export interface IBackCallsState {
-  backCalls: IBackCall[]
-  error: string
-}
+export type BackCallsState = IBackCall[]
 
 export interface IProcessBackCallPayload {
   id: string,
@@ -40,9 +36,4 @@ interface IProcessBackCall extends IAction {
   payload: IProcessBackCallPayload
 }
 
-interface ISetBackCallsError extends IAction {
-  type: BackCallsActionTypes.SET_BACK_CALLS_ERROR,
-  payload: string
-}
-
-export type BackCallsAction = ISetBackCalls | IRemoveBackCall | IProcessBackCall | ISetBackCallsError
+export type BackCallsAction = ISetBackCalls | IRemoveBackCall | IProcessBackCall

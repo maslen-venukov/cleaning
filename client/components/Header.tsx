@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -7,8 +8,10 @@ import { sendBackCall } from '../store/actions/backCalls'
 
 import Layout from 'antd/lib/layout'
 import Menu from 'antd/lib/menu'
+import SubMenu from 'antd/lib/menu/SubMenu'
 import Modal from 'antd/lib/modal'
 import Form from 'antd/lib/form'
+import Row from 'antd/lib/row'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import HomeOutlined from '@ant-design/icons/HomeOutlined'
@@ -18,10 +21,11 @@ import LikeOutlined from '@ant-design/icons/LikeOutlined'
 import PhoneOutlined from '@ant-design/icons/PhoneOutlined'
 
 import { MenuInfo } from 'rc-menu/lib/interface'
+import { RootState } from '../store/reducers'
 
 interface IMenuItem {
   label: string
-  href?: string
+  href: string
   key: string
   icon: any
 }
@@ -35,12 +39,12 @@ const Header: React.FC = () => {
   const menu: IMenuItem[] = [
     { label: 'Главная', href: '/', key: 'home', icon: HomeOutlined },
     { label: 'О нас', href: '/about', key: 'about', icon: InfoCircleOutlined },
-    { label: 'Услуги', href: '/services', key: 'services', icon: DollarOutlined },
-    { label: 'Отзывы', href: '/reviews', key: 'reviews', icon: LikeOutlined },
-    { label: 'Обратный звонок', key: 'back-call', icon: PhoneOutlined }
+    { label: 'Отзывы', href: '/reviews', key: 'reviews', icon: LikeOutlined }
   ]
 
   const router = useRouter()
+
+  const services = useSelector((state: RootState) => state.services.main)
 
   const [current, setCurrent] = useState<string>('')
   const [isModalVisible, setModalVisible] = useState<boolean>(false)
@@ -69,7 +73,7 @@ const Header: React.FC = () => {
   return (
     <Layout.Header className="header">
       <Link href="/">
-        <a className="header__logo">
+        <a style={{ lineHeight: 1 }}>
           <Image
             src="/logo.svg"
             alt="Логотип клининговой компании"
@@ -82,15 +86,25 @@ const Header: React.FC = () => {
       <Menu mode="horizontal" onClick={onMenuClick} selectedKeys={[current]}>
         {menu.map((item: IMenuItem) => (
           <Menu.Item key={item.key} icon={item.icon.render()}>
-            {item.href ? (
-              <Link href={item.href}>
-                <a>{item.label}</a>
-              </Link>
-            ) : (
-              <>{item.label}</>
-            )}
+            <Link href={item.href}>
+              <a>{item.label}</a>
+            </Link>
           </Menu.Item>
         ))}
+
+        <SubMenu key="services" icon={<DollarOutlined />} title="Услуги">
+          {services.map(service => (
+            <Menu.Item key={`services/${service._id}`}>
+              <Link href={`/services/${service._id}`}>
+                <a>{service.name}</a>
+              </Link>
+            </Menu.Item>
+          ))}
+        </SubMenu>
+
+        <Menu.Item key={'back-call'} icon={<PhoneOutlined />}>
+          Обратный звонок
+        </Menu.Item>
       </Menu>
 
       <Modal
@@ -110,17 +124,18 @@ const Header: React.FC = () => {
           </Form.Item>
 
           <Form.Item
-            name="phone"
             label="Телефон"
             rules={[{ required: true, message: 'Введите номер телефона!' }]}
           >
             <Input />
           </Form.Item>
 
-          <Form.Item labelAlign="right">
-            <Button type="primary" htmlType="submit">
-              Заказать звонок
-            </Button>
+          <Form.Item style={{ margin: 0 }}>
+            <Row justify="end">
+              <Button type="primary" htmlType="submit">
+                Заказать звонок
+              </Button>
+            </Row>
           </Form.Item>
         </Form>
       </Modal>

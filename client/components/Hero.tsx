@@ -14,10 +14,11 @@ const Intro: React.FC<IIntroProps> = ({ title, subtitle, backgroundImage }) => {
   return (
     <Row
       align="middle"
-      className="intro"
+      justify="center"
+      className="hero"
       style={{ backgroundImage: backgroundImage ? `url(${backgroundImage})` : '' }}
     >
-      <Col span={24}>
+      <Col md={16} sm={24}>
         <Typography.Title>{title}</Typography.Title>
         {subtitle && <Typography.Title level={2}>{subtitle}</Typography.Title>}
       </Col>
