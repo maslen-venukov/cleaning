@@ -1,18 +1,24 @@
 import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import axios from 'axios'
-import message from 'antd/lib/message'
 
 import MainLayout from '../layouts/MainLayout'
 
 import Hero from '../components/Hero'
+import Container from '../components/Container'
 
-import Row from 'antd/lib/row'
-import Col from 'antd/lib/col'
 import List from 'antd/lib/list'
 import Comment from 'antd/lib/comment'
+import Form from 'antd/lib/form'
+import Input from 'antd/lib/input'
+import Button from 'antd/lib/button'
+import Space from 'antd/lib/space'
+import message from 'antd/lib/message'
 
 import getDateTime from '../utils/getDateTime'
 import emptyLocale from '../utils/emptyLocale'
+
+import { sendReview } from '../store/actions/reviews'
 
 import { IReview } from '../types/reviews'
 
@@ -25,11 +31,19 @@ interface IReviewsProps {
   data: IReviewsData
 }
 
+interface IReviewsFormValues {
+  name: string
+  text: string
+}
+
 // TODO сделать добавление заказа
-// TODO сделать добавление отзыва
 // TODO сделать калькулятор
 
 const Reviews: React.FC<IReviewsProps> = ({ data }) => {
+  const dispatch = useDispatch()
+
+  const [form] = Form.useForm()
+
   useEffect(() => {
     const { error } = data
     if(error) {
@@ -37,15 +51,22 @@ const Reviews: React.FC<IReviewsProps> = ({ data }) => {
     }
   }, [data.error])
 
+  const onFormFinish = (values: IReviewsFormValues) => {
+    const { name, text } = values
+    dispatch(sendReview(name, text))
+    form.resetFields()
+  }
+
   return (
     <MainLayout title="Отзывы">
       <Hero
         title="Отзывы наших клиентов"
         backgroundImage="reviews.jpg"
       />
-      {!data.error && (
-        <Row justify="center">
-          <Col span={12}>
+
+      <Container>
+        <Space direction="vertical" size="large" style={{ width: '100%' }}>
+          {!data.error && (
             <List
               header="Список отзывов"
               itemLayout="horizontal"
@@ -61,9 +82,33 @@ const Reviews: React.FC<IReviewsProps> = ({ data }) => {
                 </li>
               )}
             />
-          </Col>
-        </Row>
-      )}
+          )}
+
+          <Form form={form} onFinish={onFormFinish}>
+            <Form.Item
+              label="Ваше имя"
+              name="name"
+              rules={[{ required: true, message: 'Введите ваше имя!' }]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              label="Текст отзыва"
+              name="text"
+              rules={[{ required: true, message: 'Введите текст!' }]}
+            >
+              <Input.TextArea autoSize={{ minRows: 2 }} />
+            </Form.Item>
+
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Добавить отзыв
+              </Button>
+            </Form.Item>
+          </Form>
+        </Space>
+      </Container>
     </MainLayout>
   )
 }

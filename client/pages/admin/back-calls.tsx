@@ -23,7 +23,7 @@ const BackCalls: React.FC = () => {
   const dispatch = useDispatch()
 
   const { token } = useSelector((state: RootState) => state.user)
-  const { backCalls } = useSelector((state: RootState) => state.backCalls)
+  const backCalls = useSelector((state: RootState) => state.backCalls)
   const isLoading = useSelector((state: RootState) => state.isLoading)
 
   const [isDrawerVisible, setDrawerVisible] = useState<boolean>(false)

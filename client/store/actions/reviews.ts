@@ -7,7 +7,7 @@ import { setLoading } from './isLoading'
 import { IReview, ReviewsAction, ReviewsActionTypes, IUpdateReviewPayload } from '../../types/reviews'
 import { LoadingAction } from '../../types/isLoading'
 
-export const setReviews = (payload: IReview[]): ReviewsAction => ({
+const setReviews = (payload: IReview[]): ReviewsAction => ({
   type: ReviewsActionTypes.SET_REVIEWS,
   payload
 })
@@ -57,5 +57,11 @@ export const fetchRemoveReview = (id: string, token: string) => (dispatch: Dispa
       dispatch(removeReview(id))
       message.success(data.message)
     })
+    .catch(e => message.error(e.response.data.message))
+}
+
+export const sendReview = (name: string, text: string) => (dispatch: Dispatch<ReviewsAction>) => {
+  axios.post('/api/reviews', { name, text })
+    .then(() => message.info('Отзыв отправлен на обработку'))
     .catch(e => message.error(e.response.data.message))
 }

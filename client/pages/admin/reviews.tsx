@@ -31,7 +31,7 @@ const Reviews: React.FC = () => {
   const dispatch = useDispatch()
 
   const { token } = useSelector((state: RootState) => state.user)
-  const { reviews } = useSelector((state: RootState) => state.reviews)
+  const reviews = useSelector((state: RootState) => state.reviews)
   const isLoading = useSelector((state: RootState) => state.isLoading)
 
   const [form] = Form.useForm()

@@ -40,7 +40,7 @@ const Home: React.FC<IHomeProps> = ({ data }) => {
         subtitle="Доверьте уборку профессионалам"
         backgroundImage="intro.jpg"
       />
-      <Space direction="vertical" size="large" style={{ paddingBottom: 15 }}>
+      <Space direction="vertical" size="large">
         {!data.error && (
           <Container>
             <Typography.Title level={3}>Наши услуги</Typography.Title>
@@ -58,6 +58,7 @@ const Home: React.FC<IHomeProps> = ({ data }) => {
               </Space>
           </Container>
         )}
+
         <Container>
           <Typography.Title level={3}>Процесс работы</Typography.Title>
           <Steps >
