@@ -32,7 +32,7 @@ class reviewsController {
 
   async getAll(req: Request, res: Response): Promise<Response> {
     try {
-      const reviews = await Review.find()
+      const reviews = await Review.find().sort({ _id: -1 })
       return res.json(reviews)
     } catch (e) {
       console.log(e)
@@ -42,7 +42,7 @@ class reviewsController {
 
   async getProcessed(req: Request, res: Response): Promise<Response> {
     try {
-      const reviews = await Review.find({ isProcessed: true })
+      const reviews = await Review.find({ isProcessed: true }).sort({ _id: -1 })
       return res.json(reviews)
     } catch (e) {
       console.log(e)

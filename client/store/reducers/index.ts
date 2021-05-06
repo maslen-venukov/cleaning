@@ -1,13 +1,15 @@
 import { HYDRATE } from 'next-redux-wrapper'
 import { combineReducers } from 'redux'
 
-import backCalls from './backCalls'
 import user from './user'
+import isLoading from './isLoading'
+import backCalls from './backCalls'
 import reviews from './reviews'
 
 const rootReducer = combineReducers({
-  backCalls,
   user,
+  isLoading,
+  backCalls,
   reviews
 })
 

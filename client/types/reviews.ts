@@ -3,8 +3,8 @@ import { IAction } from '.'
 export interface IReview {
   _id: string
   name: string
-  date: Date
   text: string
+  date: Date
   isProcessed: boolean
 }
 

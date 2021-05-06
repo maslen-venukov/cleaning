@@ -10,7 +10,6 @@ import Drawer from 'antd/lib/drawer'
 import Button from 'antd/lib/button'
 import Space from 'antd/lib/space'
 import Popconfirm from 'antd/lib/popconfirm'
-import Empty from 'antd/lib/empty'
 
 import getDateTime from '../../utils/getDateTime'
 import emptyLocale from '../../utils/emptyLocale'
@@ -23,8 +22,9 @@ import { RootState } from '../../store/reducers'
 const BackCalls: React.FC = () => {
   const dispatch = useDispatch()
 
-  const token = useSelector((state: RootState) => state.user.token)
+  const { token } = useSelector((state: RootState) => state.user)
   const { backCalls } = useSelector((state: RootState) => state.backCalls)
+  const isLoading = useSelector((state: RootState) => state.isLoading)
 
   const [isDrawerVisible, setDrawerVisible] = useState<boolean>(false)
 
@@ -36,7 +36,7 @@ const BackCalls: React.FC = () => {
       return null
     }
     dispatch(fetchBackCalls(token))
-  }, [])
+  }, [token])
 
   const onRemove = (id: string) => dispatch(fetchRemoveBackCall(id, token))
   const onProcess = (id: string) => dispatch(fetchProcessBackCall(id, token))
@@ -47,7 +47,7 @@ const BackCalls: React.FC = () => {
         dataSource={backCalls}
         rowKey={(record: IBackCall) => record._id}
         locale={emptyLocale}
-        // loading={loading}
+        loading={isLoading}
       >
         <Column title="Имя" dataIndex="name" key="name" />
         <Column title="Телефон" dataIndex="phone" key="phone" />
@@ -80,8 +80,9 @@ const BackCalls: React.FC = () => {
       </Table>
 
       <Drawer
-        title="Basic Drawer"
+        title="Создание заказа"
         placement="right"
+        width={480}
         closable={false}
         onClose={onDrawerClose}
         visible={isDrawerVisible}

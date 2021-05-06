@@ -59,7 +59,7 @@ const Header: React.FC = () => {
     setModalVisible(true)
   }
 
-  const onModalFormFinish = (values: IModalFormValues) => {
+  const onFormFinish = (values: IModalFormValues) => {
     const { name, phone } = values
     sendBackCall(name, phone)
     form.resetFields()
@@ -100,7 +100,7 @@ const Header: React.FC = () => {
         onCancel={() => setModalVisible(false)}
         className="header__modal"
       >
-        <Form form={form} onFinish={onModalFormFinish}>
+        <Form form={form} onFinish={onFormFinish}>
           <Form.Item
             label="Имя"
             name="name"
