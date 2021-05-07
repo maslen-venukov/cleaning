@@ -24,11 +24,13 @@ export interface IAdditionalService {
 export enum ServicesActionTypes {
   SET_MAIN_SERVICES = 'SET_MAIN_SERVICES',
   SET_ADDITIONAL_SERVICES = 'SET_ADDITIONAL_SERVICES',
+  SET_SERVICES_LOADING = 'SET_SERVICES_LOADING'
 }
 
 export interface IServicesState {
   main: IMainService[]
   additional: IAdditionalService[]
+  isLoading: boolean
 }
 
 interface ISetMainServices extends IAction {
@@ -41,4 +43,9 @@ interface ISetAdditionalServices extends IAction {
   payload: IAdditionalService[]
 }
 
-export type ServicesAction = ISetMainServices | ISetAdditionalServices
+interface ISetServicesLoading extends IAction {
+  type: ServicesActionTypes.SET_SERVICES_LOADING,
+  payload: boolean
+}
+
+export type ServicesAction = ISetMainServices | ISetAdditionalServices | ISetServicesLoading

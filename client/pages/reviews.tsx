@@ -36,8 +36,11 @@ interface IReviewsFormValues {
   text: string
 }
 
-// TODO сделать добавление заказа
+// TODO сделать добавление заказа (через обратный звонок)
 // TODO сделать калькулятор
+// TODO сделать обработку заявки через калькулятор
+// TODO сделать обработку заявки с фото
+// TODO сделать отправку на почту (приход заявок админу, стоимость уборки в ответ на заявку)
 
 const Reviews: React.FC<IReviewsProps> = ({ data }) => {
   const dispatch = useDispatch()

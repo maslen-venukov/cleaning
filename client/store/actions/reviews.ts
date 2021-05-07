@@ -2,13 +2,15 @@ import { Dispatch } from 'react'
 import axios from 'axios'
 import message from 'antd/lib/message'
 
-import { setLoading } from './isLoading'
-
 import { IReview, ReviewsAction, ReviewsActionTypes, IUpdateReviewPayload } from '../../types/reviews'
-import { LoadingAction } from '../../types/isLoading'
 
-const setReviews = (payload: IReview[]): ReviewsAction => ({
+export const setReviews = (payload: IReview[]): ReviewsAction => ({
   type: ReviewsActionTypes.SET_REVIEWS,
+  payload
+})
+
+const setLoading = (payload: boolean): ReviewsAction => ({
+  type: ReviewsActionTypes.SET_REVIEWS_LOADING,
   payload
 })
 
@@ -22,7 +24,7 @@ const removeReview = (payload: string): ReviewsAction => ({
   payload
 })
 
-export const fetchReviews = () => (dispatch: Dispatch<ReviewsAction | LoadingAction>) => {
+export const fetchReviews = () => (dispatch: Dispatch<ReviewsAction>) => {
   dispatch(setLoading(true))
   axios.get('/api/reviews/processed')
     .then(({ data }) => dispatch(setReviews(data)))
@@ -30,7 +32,7 @@ export const fetchReviews = () => (dispatch: Dispatch<ReviewsAction | LoadingAct
     .finally(() => dispatch(setLoading(false)))
 }
 
-export const fetchAllReviews = (token: string) => (dispatch: Dispatch<ReviewsAction | LoadingAction>) => {
+export const fetchAllReviews = (token: string) => (dispatch: Dispatch<ReviewsAction>) => {
   dispatch(setLoading(true))
   axios.get('/api/reviews', {
     headers: { Authorization: token }

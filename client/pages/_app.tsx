@@ -4,10 +4,13 @@ import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 
+import ConfigProvider from 'antd/lib/config-provider'
+import locale from 'antd/lib/locale/ru_RU'
+
 import { wrapper } from '../store'
 
 import { auth, setReady } from '../store/actions/user'
-import { fetchMainServices } from '../store/actions/services'
+import { fetchServices } from '../store/actions/services'
 
 import { RootState } from '../store/reducers'
 
@@ -23,15 +26,14 @@ const WrappedApp: React.FC<AppProps> = ({ Component, pageProps }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token')
+
     if(token) {
       dispatch(auth(token))
     } else {
       dispatch(setReady())
     }
-  }, [])
 
-  useEffect(() => {
-    dispatch(fetchMainServices())
+    dispatch(fetchServices())
   }, [])
 
   useEffect(() => {
@@ -40,7 +42,11 @@ const WrappedApp: React.FC<AppProps> = ({ Component, pageProps }) => {
     }
   }, [isReady, currentUser])
 
-  return <Component {...pageProps} />
+  return (
+    <ConfigProvider locale={locale}>
+      <Component {...pageProps} />
+    </ConfigProvider>
+  )
 }
 
 export default wrapper.withRedux(WrappedApp)

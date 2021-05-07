@@ -10,21 +10,31 @@ import Drawer from 'antd/lib/drawer'
 import Button from 'antd/lib/button'
 import Space from 'antd/lib/space'
 import Popconfirm from 'antd/lib/popconfirm'
+import Form from 'antd/lib/form'
+import Input from 'antd/lib/input'
+import DatePicker from 'antd/lib/date-picker'
 
 import getDateTime from '../../utils/getDateTime'
 import emptyLocale from '../../utils/emptyLocale'
 
-import { fetchBackCalls, fetchRemoveBackCall, fetchProcessBackCall } from '../../store/actions/backCalls'
+import { fetchBackCalls, setBackCalls, fetchRemoveBackCall, fetchProcessBackCall } from '../../store/actions/backCalls'
 
 import { IBackCall } from '../../types/backCalls'
 import { RootState } from '../../store/reducers'
+
+interface IFormValues {
+  name: string
+  connection: string
+  date: {
+    _d: Date
+  }
+}
 
 const BackCalls: React.FC = () => {
   const dispatch = useDispatch()
 
   const { token } = useSelector((state: RootState) => state.user)
-  const backCalls = useSelector((state: RootState) => state.backCalls)
-  const isLoading = useSelector((state: RootState) => state.isLoading)
+  const { backCalls, isLoading } = useSelector((state: RootState) => state.backCalls)
 
   const [isDrawerVisible, setDrawerVisible] = useState<boolean>(false)
 
@@ -36,10 +46,21 @@ const BackCalls: React.FC = () => {
       return null
     }
     dispatch(fetchBackCalls(token))
+    return () => {
+      dispatch(setBackCalls([]))
+    }
   }, [token])
 
   const onRemove = (id: string) => dispatch(fetchRemoveBackCall(id, token))
   const onProcess = (id: string) => dispatch(fetchProcessBackCall(id, token))
+
+  const onFormFinish = (values: IFormValues) => {
+    const data = {
+      ...values,
+      date: values.date._d.toJSON()
+    }
+    console.log(data)
+  }
 
   return (
     <AdminLayout>
@@ -87,9 +108,37 @@ const BackCalls: React.FC = () => {
         onClose={onDrawerClose}
         visible={isDrawerVisible}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <Form onFinish={onFormFinish}>
+          <Form.Item
+            label="Имя"
+            name="name"
+            rules={[{ required: true, message: 'Введите имя!' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Телефон"
+            name="connection"
+            rules={[{ required: true, message: 'Введите номер телефона!' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Дата"
+            name="date"
+            rules={[{ required: true, message: 'Введите назначенную дату!' }]}
+          >
+            <DatePicker showTime={{ format: 'HH:mm' }} format="YYYY-MM-DD HH:mm" />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Создать
+            </Button>
+          </Form.Item>
+        </Form>
       </Drawer>
     </AdminLayout>
   )

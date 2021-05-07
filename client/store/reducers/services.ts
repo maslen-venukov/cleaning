@@ -2,7 +2,8 @@ import { IServicesState, ServicesAction, ServicesActionTypes } from '../../types
 
 const initialState: IServicesState = {
   main: [],
-  additional: []
+  additional: [],
+  isLoading: false
 }
 
 const services = (state = initialState, action: ServicesAction): IServicesState => {
@@ -17,6 +18,12 @@ const services = (state = initialState, action: ServicesAction): IServicesState 
       return {
         ...state,
         additional: action.payload
+      }
+
+    case ServicesActionTypes.SET_SERVICES_LOADING:
+      return {
+        ...state,
+        isLoading: action.payload
       }
 
     default:

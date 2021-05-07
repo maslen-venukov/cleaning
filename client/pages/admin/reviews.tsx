@@ -17,7 +17,7 @@ import message from 'antd/lib/message'
 import getDateTime from '../../utils/getDateTime'
 import emptyLocale from '../../utils/emptyLocale'
 
-import { fetchAllReviews, fetchRemoveReview, fetchUpdateReview } from '../../store/actions/reviews'
+import { fetchAllReviews, setReviews, fetchRemoveReview, fetchUpdateReview } from '../../store/actions/reviews'
 
 import { RootState } from '../../store/reducers'
 import { IReview } from '../../types/reviews'
@@ -31,8 +31,7 @@ const Reviews: React.FC = () => {
   const dispatch = useDispatch()
 
   const { token } = useSelector((state: RootState) => state.user)
-  const reviews = useSelector((state: RootState) => state.reviews)
-  const isLoading = useSelector((state: RootState) => state.isLoading)
+  const { reviews, isLoading } = useSelector((state: RootState) => state.reviews)
 
   const [form] = Form.useForm()
 
@@ -53,6 +52,9 @@ const Reviews: React.FC = () => {
       return null
     }
     dispatch(fetchAllReviews(token))
+    return () => {
+      dispatch(setReviews([]))
+    }
   }, [token])
 
   const onRemove = (id: string) => dispatch(fetchRemoveReview(id, token))

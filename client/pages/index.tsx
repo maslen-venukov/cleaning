@@ -7,6 +7,9 @@ import MainLayout from '../layouts/MainLayout'
 import Hero from '../components/Hero'
 import Container from '../components/Container'
 
+import Form from 'antd/lib/form'
+import Input from 'antd/lib/input'
+import Button from 'antd/lib/button'
 import Card from 'antd/lib/card'
 import Typography from 'antd/lib/typography'
 import Space from 'antd/lib/space'
@@ -41,6 +44,32 @@ const Home: React.FC<IHomeProps> = ({ data }) => {
         backgroundImage="intro.jpg"
       />
       <Space direction="vertical" size="large">
+        <Container>
+          <Form onFinish={() => ({})}>
+            <Form.Item
+              label="Username"
+              name="username"
+              rules={[{ required: true, message: 'Please input your username!' }]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={[{ required: true, message: 'Please input your password!' }]}
+            >
+              <Input.Password />
+            </Form.Item>
+
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
+        </Container>
+
         {!data.error && (
           <Container>
             <Typography.Title level={3}>Наши услуги</Typography.Title>

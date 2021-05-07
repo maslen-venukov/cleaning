@@ -10,11 +10,15 @@ export interface IReview {
 
 export enum ReviewsActionTypes {
   SET_REVIEWS = 'SET_REVIEWS',
+  SET_REVIEWS_LOADING = 'SET_REVIEWS_LOADING',
   UPDATE_REVIEW = 'UPDATE_REVIEW',
   REMOVE_REVIEW = 'REMOVE_REVIEW'
 }
 
-export type ReviewsState = IReview[]
+export interface IReviewsState {
+  reviews: IReview[]
+  isLoading: boolean
+}
 
 export interface IUpdateReviewPayload {
   id: string,
@@ -30,6 +34,11 @@ interface ISetReviews extends IAction {
   payload: IReview[]
 }
 
+interface ISetReviewsLoading extends IAction {
+  type: ReviewsActionTypes.SET_REVIEWS_LOADING,
+  payload: boolean
+}
+
 interface IUpdateReview extends IAction {
   type: ReviewsActionTypes.UPDATE_REVIEW,
   payload: IUpdateReviewPayload
@@ -40,4 +49,4 @@ interface IRemoveReview extends IAction {
   payload: string
 }
 
-export type ReviewsAction = ISetReviews | IUpdateReview | IRemoveReview
+export type ReviewsAction = ISetReviews | ISetReviewsLoading | IUpdateReview | IRemoveReview

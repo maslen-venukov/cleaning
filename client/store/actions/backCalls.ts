@@ -2,13 +2,15 @@ import { Dispatch } from 'react'
 import axios from 'axios'
 import message from 'antd/lib/message'
 
-import { setLoading } from './isLoading'
-
 import { IBackCall, BackCallsAction, BackCallsActionTypes, IProcessBackCallPayload } from '../../types/backCalls'
-import { LoadingAction } from '../../types/isLoading'
 
-const setBackCalls = (payload: IBackCall[]): BackCallsAction => ({
+export const setBackCalls = (payload: IBackCall[]): BackCallsAction => ({
   type: BackCallsActionTypes.SET_BACK_CALLS,
+  payload
+})
+
+const setLoading = (payload: boolean): BackCallsAction => ({
+  type: BackCallsActionTypes.SET_BACK_CALLS_LOADING,
   payload
 })
 
@@ -22,7 +24,7 @@ const processBackCall = (payload: IProcessBackCallPayload): BackCallsAction => (
   payload
 })
 
-export const fetchBackCalls = (token: string) => (dispatch: Dispatch<BackCallsAction | LoadingAction>) => {
+export const fetchBackCalls = (token: string) => (dispatch: Dispatch<BackCallsAction>) => {
   dispatch(setLoading(true))
   axios.get('/api/back-calls', {
     headers: { Authorization: token }

@@ -65,6 +65,7 @@ const Header: React.FC = () => {
 
   const onFormFinish = (values: IModalFormValues) => {
     const { name, phone } = values
+    console.log(values)
     sendBackCall(name, phone)
     form.resetFields()
     setModalVisible(false)
@@ -125,6 +126,7 @@ const Header: React.FC = () => {
 
           <Form.Item
             label="Телефон"
+            name="phone"
             rules={[{ required: true, message: 'Введите номер телефона!' }]}
           >
             <Input />

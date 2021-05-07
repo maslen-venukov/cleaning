@@ -1,6 +1,6 @@
 import { model, Schema, Document } from 'mongoose'
 
-interface IAdditionalServiceOption {
+export interface IAdditionalServiceOption {
   name: string
   price: number
   units: string
