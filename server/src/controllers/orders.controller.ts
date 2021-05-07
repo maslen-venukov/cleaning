@@ -6,6 +6,7 @@ import errorHandler from '../utils/errorHandler'
 import isValidObjectId from '../utils/isValidObjectId'
 
 import removeService from '../services/remove.service'
+import getByIdService from '../services/getById.service'
 
 import { HTTPStatusCodes } from '../types'
 
@@ -52,19 +53,7 @@ class ordersController {
 
   async getById(req: Request, res: Response): Promise<Response> {
     try {
-      const { id } = req.params
-
-      if(!isValidObjectId(id)) {
-        return errorHandler(res, HTTPStatusCodes.BadRequest, 'Некорректный id')
-      }
-
-      const order = await Order.findById(id)
-
-      if(!order) {
-        return errorHandler(res, HTTPStatusCodes.NotFound, 'Заказ не найден')
-      }
-
-      return res.json(order)
+      return getByIdService(req, res, Order, 'Заказ')
     } catch (e) {
       console.log(e)
       return errorHandler(res)
