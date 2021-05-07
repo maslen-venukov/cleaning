@@ -14,6 +14,7 @@ import Form from 'antd/lib/form'
 import Row from 'antd/lib/row'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
+import Spin from 'antd/lib/spin'
 import HomeOutlined from '@ant-design/icons/HomeOutlined'
 import InfoCircleOutlined from '@ant-design/icons/InfoCircleOutlined'
 import DollarOutlined from '@ant-design/icons/DollarOutlined'
@@ -44,7 +45,7 @@ const Header: React.FC = () => {
 
   const router = useRouter()
 
-  const services = useSelector((state: RootState) => state.services.main)
+  const { main: services, isLoading } = useSelector((state: RootState) => state.services)
 
   const [current, setCurrent] = useState<string>('')
   const [isModalVisible, setModalVisible] = useState<boolean>(false)
@@ -94,13 +95,15 @@ const Header: React.FC = () => {
         ))}
 
         <SubMenu key="services" icon={<DollarOutlined />} title="Услуги">
-          {services.map(service => (
-            <Menu.Item key={`services/${service._id}`}>
-              <Link href={`/services/${service._id}`}>
-                <a>{service.name}</a>
-              </Link>
-            </Menu.Item>
-          ))}
+          {!isLoading ? (
+            services.map(service => (
+              <Menu.Item key={`services/${service._id}`}>
+                <Link href={`/services/${service._id}`}>
+                  <a>{service.name}</a>
+                </Link>
+              </Menu.Item>
+            ))
+          ) : <Spin />}
         </SubMenu>
 
         <Menu.Item key={'back-call'} icon={<PhoneOutlined />}>

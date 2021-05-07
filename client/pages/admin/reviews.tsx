@@ -40,9 +40,9 @@ const Reviews: React.FC = () => {
 
   const onDrawerOpen = (record: IReview) => {
     const { _id, name, text } = record
-    setDrawerVisible(true)
-    form.setFieldsValue({ name, text })
     setId(_id)
+    form.setFieldsValue({ name, text })
+    setDrawerVisible(true)
   }
 
   const onDrawerClose = () => setDrawerVisible(false)

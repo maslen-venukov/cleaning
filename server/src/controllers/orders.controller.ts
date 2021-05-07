@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import MainService, { IMainService } from '../models/MainService'
+import Order, { IOrder } from '../models/Order'
 
 import errorHandler from '../utils/errorHandler'
 import isValidObjectId from '../utils/isValidObjectId'
@@ -9,25 +9,31 @@ import removeService from '../services/remove.service'
 
 import { HTTPStatusCodes } from '../types'
 
-class mainServiceController {
+class ordersController {
   async create(req: Request, res: Response): Promise<Response> {
     try {
-      const { name, price, units, includes, info }: IMainService = req.body
+      const { name, connection, date, services }: IOrder = req.body
 
-      if(!name.trim() || !price || !units.trim() || !includes.length || !info.trim()) {
+      console.log(req.body)
+
+      if(!name.trim() || !connection.trim() || !date) {
         return errorHandler(res, HTTPStatusCodes.BadRequest, 'Заполните все поля')
       }
 
-      const mainService = new MainService({
+      const { name: serviceName, price, units, value } = services.main
+      if(!serviceName.trim() || !price || !units.trim() || !value) {
+        return errorHandler(res, HTTPStatusCodes.BadRequest, 'Заполните все поля')
+      }
+
+      const order = new Order({
         name,
-        price,
-        units,
-        includes,
-        info
+        connection,
+        date,
+        services
       })
 
-      await mainService.save()
-      return res.status(HTTPStatusCodes.Created).json(mainService)
+      await order.save()
+      return res.status(HTTPStatusCodes.Created).json(order)
     } catch (e) {
       console.log(e)
       return errorHandler(res)
@@ -36,8 +42,8 @@ class mainServiceController {
 
   async getAll(req: Request, res: Response): Promise<Response> {
     try {
-      const mainServices = await MainService.find().sort({ _id: -1 })
-      return res.json(mainServices)
+      const orders = await Order.find().sort({ _id: -1 })
+      return res.json(orders)
     } catch (e) {
       console.log(e)
       return errorHandler(res)
@@ -52,13 +58,13 @@ class mainServiceController {
         return errorHandler(res, HTTPStatusCodes.BadRequest, 'Некорректный id')
       }
 
-      const mainService = await MainService.findById(id)
+      const order = await Order.findById(id)
 
-      if(!mainService) {
-        return errorHandler(res, HTTPStatusCodes.NotFound, 'Услуга не найдена')
+      if(!order) {
+        return errorHandler(res, HTTPStatusCodes.NotFound, 'Заказ не найден')
       }
 
-      return res.json(mainService)
+      return res.json(order)
     } catch (e) {
       console.log(e)
       return errorHandler(res)
@@ -73,22 +79,21 @@ class mainServiceController {
         return errorHandler(res, HTTPStatusCodes.BadRequest, 'Некорректный id')
       }
 
-      const mainService = await MainService.findById(id)
+      const order = await Order.findById(id)
 
-      if(!mainService) {
-        return errorHandler(res, HTTPStatusCodes.NotFound, 'Услуга не найдена')
+      if(!order) {
+        return errorHandler(res, HTTPStatusCodes.NotFound, 'Заказ не найден')
       }
 
-      const { name, price, units, includes, info }: IMainService = req.body
+      const { name, connection, date, services }: IOrder = req.body
 
-      mainService.name = name || mainService.name
-      mainService.price = price || mainService.price
-      mainService.units = units || mainService.units
-      mainService.includes = includes.length ? includes : mainService.includes
-      mainService.info = info || mainService.info
+      order.name = name || order.name
+      order.connection = connection || order.connection
+      order.date = date || order.date
+      order.services = services || order.services
 
-      await mainService.save()
-      return res.json(mainService)
+      await order.save()
+      return res.json(order)
     } catch (e) {
       console.log(e)
       return errorHandler(res)
@@ -97,7 +102,7 @@ class mainServiceController {
 
   async remove(req: Request, res: Response): Promise<Response> {
     try {
-      return removeService(req, res, MainService, 'Услуга')
+      return removeService(req, res, Order, 'Заказ')
     } catch (e) {
       console.log(e)
       return errorHandler(res)
@@ -105,4 +110,4 @@ class mainServiceController {
   }
 }
 
-export default new mainServiceController()
+export default new ordersController()

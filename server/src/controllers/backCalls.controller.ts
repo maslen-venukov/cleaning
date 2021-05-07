@@ -5,6 +5,8 @@ import BackCall, { IBackCall } from '../models/BackCall'
 import errorHandler from '../utils/errorHandler'
 import isValidObjectId from '../utils/isValidObjectId'
 
+import removeService from '../services/remove.service'
+
 import { HTTPStatusCodes } from '../types'
 
 class backCallsController {
@@ -46,20 +48,7 @@ class backCallsController {
 
   async remove(req: Request, res: Response): Promise<Response> {
     try {
-      const { id } = req.params
-
-      if(!isValidObjectId(id)) {
-        return errorHandler(res, HTTPStatusCodes.BadRequest, 'Некорректный id')
-      }
-
-      const backCall = await BackCall.findById(id)
-
-      if(!backCall) {
-        return errorHandler(res, HTTPStatusCodes.NotFound, 'Заявка не найдена')
-      }
-
-      await backCall.deleteOne()
-      return res.json({ message: 'Заявка успешно удалена' })
+      return removeService(req, res, BackCall, 'Заявка')
     } catch (e) {
       console.log(e)
       return errorHandler(res)

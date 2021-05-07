@@ -10,6 +10,7 @@ export interface IMainService {
 }
 
 interface IAdditionalServiceOption {
+  _id: string
   name: string
   price: number
   units: string

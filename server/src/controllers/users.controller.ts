@@ -43,7 +43,7 @@ class UsersController {
 
       const { _id } = user
 
-      const token = `Bearer ${jwt.sign({ _id, login }, SECRET_KEY, { expiresIn: '1h' })}`
+      const token = `Bearer ${jwt.sign({ _id, login }, SECRET_KEY, { expiresIn: '24h' })}`
 
       await user.save()
       return res.status(HTTPStatusCodes.Created).json({
@@ -76,7 +76,7 @@ class UsersController {
 
       const { _id } = user
 
-      const token = `Bearer ${jwt.sign({ _id, login }, SECRET_KEY, { expiresIn: '1h' })}`
+      const token = `Bearer ${jwt.sign({ _id, login }, SECRET_KEY, { expiresIn: '24h' })}`
 
       return res.json({
         token,
@@ -93,7 +93,7 @@ class UsersController {
       const { _id, login } = req.user
       const user = await User.findById(_id)
 
-      const token = `Bearer ${jwt.sign({ _id: user._id, login }, SECRET_KEY, { expiresIn: '1h' })}`
+      const token = `Bearer ${jwt.sign({ _id: user._id, login }, SECRET_KEY, { expiresIn: '24h' })}`
 
       return res.json({
         token,

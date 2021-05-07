@@ -15,12 +15,18 @@ import Typography from 'antd/lib/typography'
 import Space from 'antd/lib/space'
 import Steps from 'antd/lib/steps'
 import message from 'antd/lib/message'
-import { SolutionOutlined, FormOutlined, FormatPainterOutlined, CheckCircleOutlined } from '@ant-design/icons/lib/icons'
+import SolutionOutlined from '@ant-design/icons/lib/icons/SolutionOutlined'
+import FormOutlined from '@ant-design/icons/lib/icons/FormOutlined'
+import FormatPainterOutlined from '@ant-design/icons/lib/icons/FormatPainterOutlined'
+import CheckCircleOutlined from '@ant-design/icons/lib/icons/CheckCircleOutlined'
 
-import { IServicesState } from '../types/services'
+import { IMainService, IAdditionalService } from '../types/services'
 
 interface IHomeData {
-  services: IServicesState
+  services: {
+    main: IMainService[]
+    additional: IAdditionalService[]
+  }
   error: string
 }
 

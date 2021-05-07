@@ -2,12 +2,12 @@ import React from 'react'
 
 import AdminLayout from '../../layouts/AdminLayout'
 
-const Services: React.FC = () => {
+const Photo: React.FC = () => {
   return (
     <AdminLayout>
-      services
+      Photo
     </AdminLayout>
   )
 }
 
-export default Services
+export default Photo

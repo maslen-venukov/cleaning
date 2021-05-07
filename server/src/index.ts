@@ -11,6 +11,7 @@ import backCallsRouter from './routes/backCalls.route'
 import reviewsRouter from './routes/reviews.route'
 import mainServiceRouter from './routes/mainService.route'
 import additionalServiceRouter from './routes/additionalService.route'
+import ordersRouter from './routes/orders.route'
 
 const PORT = process.env.PORT || 5000
 const MONGO_URI = process.env.MONGO_URI
@@ -26,6 +27,7 @@ app.use('/api/back-calls', backCallsRouter)
 app.use('/api/reviews', reviewsRouter)
 app.use('/api/services/main', mainServiceRouter)
 app.use('/api/services/additional', additionalServiceRouter)
+app.use('/api/orders', ordersRouter)
 
 const start = async () => {
   try {

@@ -5,6 +5,8 @@ import Review, { IReview } from '../models/Review'
 import errorHandler from '../utils/errorHandler'
 import isValidObjectId from '../utils/isValidObjectId'
 
+import removeService from '../services/remove.service'
+
 import { HTTPStatusCodes } from '../types'
 
 class reviewsController {
@@ -79,20 +81,7 @@ class reviewsController {
 
   async remove(req: Request, res: Response): Promise<Response> {
     try {
-      const { id } = req.params
-
-      if(!isValidObjectId(id)) {
-        return errorHandler(res, HTTPStatusCodes.BadRequest, 'Некорректный id')
-      }
-
-      const review = await Review.findById(id)
-
-      if(!review) {
-        return errorHandler(res, HTTPStatusCodes.NotFound, 'Отзыв не найден')
-      }
-
-      await review.deleteOne()
-      return res.json({ message: 'Отзыв успешно удален' })
+      return removeService(req, res, Review, 'Отзыв')
     } catch (e) {
       console.log(e)
       return errorHandler(res)

@@ -5,6 +5,8 @@ import AdditionalService, { IAdditionalService } from '../models/AdditionalServi
 import errorHandler from '../utils/errorHandler'
 import isValidObjectId from '../utils/isValidObjectId'
 
+import removeService from '../services/remove.service'
+
 import { HTTPStatusCodes } from '../types'
 
 class additionalServicesController {
@@ -89,20 +91,7 @@ class additionalServicesController {
 
   async remove(req: Request, res: Response): Promise<Response> {
     try {
-      const { id } = req.params
-
-      if(!isValidObjectId(id)) {
-        return errorHandler(res, HTTPStatusCodes.BadRequest, 'Некорректный id')
-      }
-
-      const additionalService = await AdditionalService.findById(id)
-
-      if(!additionalService) {
-        return errorHandler(res, HTTPStatusCodes.NotFound, 'Услуга не найдена')
-      }
-
-      await additionalService.deleteOne()
-      return res.json({ message: 'Услуга успешно удалена' })
+      return removeService(req, res, AdditionalService, 'Услуга')
     } catch (e) {
       console.log(e)
       return errorHandler(res)

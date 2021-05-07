@@ -4,21 +4,22 @@ import { IAdditionalServiceOption } from './AdditionalService'
 
 interface IOrderAdditional {
   name: string
-  options: IAdditionalServiceOption & { count: number }
+  options: IAdditionalServiceOption & { value: number }
 }
 
 export interface IOrder {
   _id?: string
   name: string
   connection: string
+  date: Date
   services: {
     main: {
       name: string
       price: number
       units: string
-      count: number
+      value: number
     },
-    additionals: IOrderAdditional[]
+    additionals?: IOrderAdditional[]
   }
 }
 
@@ -31,16 +32,15 @@ const ordersSchema = new Schema({
       name: { type: String, required: true },
       price: { type: Number, required: true, min: 0 },
       units: { type: String, required: true },
-      count: { type: Number, required: true, min: 0 }
+      value: { type: Number, required: true, min: 0 }
     },
     additionals: {
       type: [{
         name: { type: String, required: true, unique: true },
         price: { type: Number, required: true, min: 0 },
         units: { type: String, required: true },
-        count: { type: Number, required: true, min: 0 }
-      }],
-      required: true
+        value: { type: Number, required: true, min: 0 }
+      }]
     }
   }
 })
