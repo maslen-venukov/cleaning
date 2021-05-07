@@ -5,8 +5,9 @@ import MainService, { IMainService } from '../models/MainService'
 import errorHandler from '../utils/errorHandler'
 import isValidObjectId from '../utils/isValidObjectId'
 
-import removeService from '../services/remove.service'
+import getAllService from '../services/getAll.service'
 import getByIdService from '../services/getById.service'
+import removeService from '../services/remove.service'
 
 import { HTTPStatusCodes } from '../types'
 
@@ -37,8 +38,7 @@ class mainServiceController {
 
   async getAll(req: Request, res: Response): Promise<Response> {
     try {
-      const mainServices = await MainService.find().sort({ _id: -1 })
-      return res.json(mainServices)
+      return getAllService(res, MainService)
     } catch (e) {
       console.log(e)
       return errorHandler(res)

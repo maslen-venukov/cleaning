@@ -5,6 +5,7 @@ import AdditionalService, { IAdditionalService } from '../models/AdditionalServi
 import errorHandler from '../utils/errorHandler'
 import isValidObjectId from '../utils/isValidObjectId'
 
+import getAllService from '../services/getAll.service'
 import getByIdService from '../services/getById.service'
 import removeService from '../services/remove.service'
 
@@ -34,8 +35,7 @@ class additionalServicesController {
 
   async getAll(req: Request, res: Response): Promise<Response> {
     try {
-      const additionalServices = await AdditionalService.find().sort({ _id: -1 })
-      return res.json(additionalServices)
+      return getAllService(res, AdditionalService)
     } catch (e) {
       console.log(e)
       return errorHandler(res)

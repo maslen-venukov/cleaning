@@ -5,6 +5,7 @@ import BackCall, { IBackCall } from '../models/BackCall'
 import errorHandler from '../utils/errorHandler'
 import isValidObjectId from '../utils/isValidObjectId'
 
+import getAllService from '../services/getAll.service'
 import removeService from '../services/remove.service'
 
 import { HTTPStatusCodes } from '../types'
@@ -12,8 +13,7 @@ import { HTTPStatusCodes } from '../types'
 class backCallsController {
   async getAll(req: Request, res: Response): Promise<Response> {
     try {
-      const backCalls = await BackCall.find().sort({ _id: -1 })
-      return res.json(backCalls)
+      return getAllService(res, BackCall)
     } catch (e) {
       console.log(e)
       return errorHandler(res)

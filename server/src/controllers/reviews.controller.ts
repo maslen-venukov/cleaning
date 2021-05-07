@@ -5,6 +5,7 @@ import Review, { IReview } from '../models/Review'
 import errorHandler from '../utils/errorHandler'
 import isValidObjectId from '../utils/isValidObjectId'
 
+import getAllService from '../services/getAll.service'
 import removeService from '../services/remove.service'
 
 import { HTTPStatusCodes } from '../types'
@@ -33,8 +34,7 @@ class reviewsController {
 
   async getAll(req: Request, res: Response): Promise<Response> {
     try {
-      const reviews = await Review.find().sort({ _id: -1 })
-      return res.json(reviews)
+      return getAllService(res, Review)
     } catch (e) {
       console.log(e)
       return errorHandler(res)
