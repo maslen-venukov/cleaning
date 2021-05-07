@@ -1,6 +1,7 @@
 import { IAction } from '.'
 
-interface IOrderService {
+export interface IOrderService {
+  _id?: string
   name: string
   price: number
   units: string
@@ -11,7 +12,10 @@ export interface IOrder {
   _id?: string
   name: string
   connection: string
+  address: string
   date: Date
+  isCompleted?: boolean
+  comment?: string
   services: {
     main: IOrderService
     additionals: IOrderService[]

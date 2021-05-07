@@ -48,7 +48,7 @@ class backCallsController {
 
   async remove(req: Request, res: Response): Promise<Response> {
     try {
-      return removeService(req, res, BackCall, 'Заявка')
+      return removeService(req, res, BackCall, 'Заявка', 'а')
     } catch (e) {
       console.log(e)
       return errorHandler(res)

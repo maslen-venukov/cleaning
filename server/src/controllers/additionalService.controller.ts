@@ -44,7 +44,7 @@ class additionalServicesController {
 
   async getById(req: Request, res: Response): Promise<Response> {
     try {
-      return getByIdService(req, res, AdditionalService, 'Услуга')
+      return getByIdService(req, res, AdditionalService, 'Услуга', 'а')
     } catch (e) {
       console.log(e)
       return errorHandler(res)
@@ -80,7 +80,7 @@ class additionalServicesController {
 
   async remove(req: Request, res: Response): Promise<Response> {
     try {
-      return removeService(req, res, AdditionalService, 'Услуга')
+      return removeService(req, res, AdditionalService, 'Услуга', 'а')
     } catch (e) {
       console.log(e)
       return errorHandler(res)

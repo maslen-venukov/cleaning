@@ -14,11 +14,9 @@ import { HTTPStatusCodes } from '../types'
 class ordersController {
   async create(req: Request, res: Response): Promise<Response> {
     try {
-      const { name, connection, date, services }: IOrder = req.body
+      const { name, connection, address, date, services, comment }: IOrder = req.body
 
-      console.log(req.body)
-
-      if(!name.trim() || !connection.trim() || !date) {
+      if(!name.trim() || !connection.trim() || !address.trim() || !date) {
         return errorHandler(res, HTTPStatusCodes.BadRequest, 'Заполните все поля')
       }
 
@@ -30,8 +28,10 @@ class ordersController {
       const order = new Order({
         name,
         connection,
+        address,
         date,
-        services
+        services,
+        comment
       })
 
       await order.save()
@@ -74,12 +74,15 @@ class ordersController {
         return errorHandler(res, HTTPStatusCodes.NotFound, 'Заказ не найден')
       }
 
-      const { name, connection, date, services }: IOrder = req.body
+      const { name, connection, address, date, services, isCompleted, comment }: IOrder = req.body
 
       order.name = name || order.name
       order.connection = connection || order.connection
+      order.address = address || order.address
       order.date = date || order.date
       order.services = services || order.services
+      order.isCompleted = isCompleted || order.isCompleted
+      order.comment = comment || order.comment
 
       await order.save()
       return res.json(order)

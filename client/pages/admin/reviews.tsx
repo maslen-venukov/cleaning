@@ -15,7 +15,6 @@ import Input from 'antd/lib/input'
 import message from 'antd/lib/message'
 
 import getDateTime from '../../utils/getDateTime'
-import emptyLocale from '../../utils/emptyLocale'
 
 import { fetchAllReviews, setReviews, fetchRemoveReview, fetchUpdateReview } from '../../store/actions/reviews'
 
@@ -77,7 +76,6 @@ const Reviews: React.FC = () => {
       <Table
         dataSource={reviews}
         rowKey={(record: IReview) => record._id}
-        locale={emptyLocale}
         loading={isLoading}
       >
         <Column title="Имя" dataIndex="name" key="name" />
@@ -114,7 +112,6 @@ const Reviews: React.FC = () => {
         title="Редактирование отзыва"
         placement="right"
         width={480}
-        closable={false}
         onClose={onDrawerClose}
         visible={isDrawerVisible}
       >

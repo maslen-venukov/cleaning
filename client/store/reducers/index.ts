@@ -5,12 +5,14 @@ import user from './user'
 import backCalls from './backCalls'
 import reviews from './reviews'
 import services from './services'
+import orders from './orders'
 
 const rootReducer = combineReducers({
   user,
   backCalls,
   reviews,
-  services
+  services,
+  orders
 })
 
 export const reducer = (state, action) => {

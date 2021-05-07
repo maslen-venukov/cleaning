@@ -6,7 +6,7 @@ import isValidObjectId from '../utils/isValidObjectId'
 
 import { HTTPStatusCodes } from '../types'
 
-const getById = async (req: Request, res: Response, model: Model<any>, modelName: string): Promise<Response> => {
+const getById = async (req: Request, res: Response, model: Model<any>, modelName: string, ending = ''): Promise<Response> => {
   const { id } = req.params
 
   if(!isValidObjectId(id)) {
@@ -16,7 +16,7 @@ const getById = async (req: Request, res: Response, model: Model<any>, modelName
   const document = await model.findById(id)
 
   if(!document) {
-    return errorHandler(res, HTTPStatusCodes.NotFound, `${modelName} не найден(а)`)
+    return errorHandler(res, HTTPStatusCodes.NotFound, `${modelName} не найден${ending || ''}`)
   }
 
   return res.json(document)

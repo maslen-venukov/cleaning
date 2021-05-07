@@ -43,8 +43,7 @@ class reviewsController {
 
   async getProcessed(req: Request, res: Response): Promise<Response> {
     try {
-      const reviews = await Review.find({ isProcessed: true }).sort({ _id: -1 })
-      return res.json(reviews)
+      return getAllService(res, Review, { isProcessed: true })
     } catch (e) {
       console.log(e)
       return errorHandler(res)

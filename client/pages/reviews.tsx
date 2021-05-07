@@ -16,7 +16,6 @@ import Space from 'antd/lib/space'
 import message from 'antd/lib/message'
 
 import getDateTime from '../utils/getDateTime'
-import emptyLocale from '../utils/emptyLocale'
 
 import { sendReview } from '../store/actions/reviews'
 
@@ -36,8 +35,7 @@ interface IReviewsFormValues {
   text: string
 }
 
-// TODO сделать сервис для поиска (по id, всех) + валидации для id и поиска
-// TODO сделать страницу заказов
+// TODO сделать редактирование заказа
 // TODO сделать калькулятор
 // TODO сделать обработку заявки через калькулятор
 // TODO сделать обработку заявки с фото
@@ -75,7 +73,6 @@ const Reviews: React.FC<IReviewsProps> = ({ data }) => {
               header="Список отзывов"
               itemLayout="horizontal"
               dataSource={data.reviews}
-              locale={emptyLocale}
               renderItem={(review: IReview) => (
                 <li>
                   <Comment

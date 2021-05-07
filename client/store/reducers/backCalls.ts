@@ -31,7 +31,7 @@ const backCalls = (state = initialState, action: BackCallsAction): IBackCallsSta
       const { id, isProcessed } = action.payload
       const backCalls = state.backCalls.map(backCall => {
         return backCall._id === id
-          ? { ...backCall, isProcessed: isProcessed }
+          ? { ...backCall, isProcessed }
           : backCall
       })
       return {
