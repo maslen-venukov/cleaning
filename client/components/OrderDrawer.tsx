@@ -25,13 +25,14 @@ export interface IOrderDrawerConfig {
 
 interface IOrderDrawerProps extends DrawerProps, FormProps {
   title: string
+  submitText: string
   isLoading: boolean
   main: IMainService[]
   additional: IAdditionalService[]
   config?: IOrderDrawerConfig
 }
 
-const OrderDrawer: React.FC<IOrderDrawerProps> = ({ title, onClose, visible, form, onFinish, isLoading, main, additional, config }) => {
+const OrderDrawer: React.FC<IOrderDrawerProps> = ({ title, submitText, onClose, visible, form, onFinish, isLoading, main, additional, config }) => {
   const contact = getContactStrings(config)
 
   return (
@@ -153,7 +154,7 @@ const OrderDrawer: React.FC<IOrderDrawerProps> = ({ title, onClose, visible, for
 
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            Создать
+            {submitText}
           </Button>
         </Form.Item>
       </Form>

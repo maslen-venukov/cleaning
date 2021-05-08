@@ -144,6 +144,7 @@ const BackCalls: React.FC = () => {
 
       <OrderDrawer
         title="Создание заказа"
+        submitText="Создать"
         onClose={onDrawerClose}
         visible={isDrawerVisible}
         form={form}

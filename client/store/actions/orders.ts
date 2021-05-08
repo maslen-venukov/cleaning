@@ -56,11 +56,15 @@ export const fetchRemoveOrder = (id: string, token: string) => (dispatch: Dispat
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchUpdateOrder = (payload: IUpdateOrderPayload, token: string) => (dispatch: Dispatch<OrdersAction>) => {
+export const fetchUpdateOrder = (payload: IUpdateOrderPayload, token: string, cb: () => void) => (dispatch: Dispatch<OrdersAction>) => {
   const { id, data } = payload
   axios.put(`/api/orders/${id}`, data, {
     headers: { Authorization: token}
   })
-    .then(({ data }) => dispatch(updateOrder({ id: data._id, data })))
+    .then(({ data }) => {
+      dispatch(updateOrder({ id: data._id, data }))
+      console.log(data)
+      cb()
+    })
     .catch(e => message.error(e.response.data.message))
 }
