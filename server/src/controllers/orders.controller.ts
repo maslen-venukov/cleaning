@@ -81,7 +81,7 @@ class ordersController {
       order.address = address || order.address
       order.date = date || order.date
       order.services = services || order.services
-      order.isCompleted = isCompleted || order.isCompleted
+      order.isCompleted = isCompleted !== undefined ? isCompleted : order.isCompleted
       order.comment = comment || order.comment
 
       await order.save()
