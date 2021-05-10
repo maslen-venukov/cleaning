@@ -131,6 +131,7 @@ const OrderDrawer: React.FC<IOrderDrawerProps> = ({ title, submitText, onClose, 
                         placeholder="Выберите услугу"
                       />
                     </Form.Item>
+
                     <Form.Item
                       {...restField}
                       name={[name, 'value']}

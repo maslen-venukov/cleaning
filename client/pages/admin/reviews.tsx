@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import AdminLayout from '../../layouts/AdminLayout'
 
+import Actions from '../../components/Actions'
+
 import Table from 'antd/lib/table'
 import Column from 'antd/lib/table/Column'
 import Button from 'antd/lib/button'
 import Checkbox from 'antd/lib/checkbox'
-import Popconfirm from 'antd/lib/popconfirm'
-import Space from 'antd/lib/space'
 import Drawer from 'antd/lib/drawer'
 import Form from 'antd/lib/form'
 import Input from 'antd/lib/input'
@@ -84,18 +84,14 @@ const Reviews: React.FC = () => {
         <Column
           title="Действия"
           key="action"
-          render={(value, record: IReview) => (
-            <Space size="small">
-              <Button type="primary" onClick={() => onDrawerOpen(record)}>Редактировать</Button>
-              <Popconfirm
-                title="Вы действительно хотите удалить отзыв?"
-                okText="Да"
-                cancelText="Нет"
-                onConfirm={() => onRemove(record._id)}
-              >
-                <Button type="primary" danger>Удалить</Button>
-              </Popconfirm>
-            </Space>
+          render={(_, record: IReview) => (
+            <Actions
+              record={record}
+              whatToRemove="отзыв"
+              onDrawerOpen={onDrawerOpen}
+              onRemove={onRemove}
+              config={{ edit: true, remove: true }}
+            />
           )}
         />
         <Column

@@ -25,6 +25,7 @@ import { fetchOrders, fetchRemoveOrder, fetchUpdateOrder, setOrders } from '../.
 import { RootState } from '../../store/reducers'
 import { IOrder, IOrderService } from '../../types/orders'
 import { IMainService } from '../../types/services'
+import Actions from '../../components/Actions'
 
 interface IMainServiceRecord extends IMainService {
   value: number
@@ -125,7 +126,6 @@ const Orders: React.FC = () => {
     dispatch(fetchUpdateOrder({ id: order._id, data }, token, () => {
       form.resetFields()
       onDrawerClose()
-      message.success('Заказ успешно изменен')
     }))
   }
 
@@ -144,18 +144,14 @@ const Orders: React.FC = () => {
           title="Действия"
           key="action"
           render={(_, record: IOrder) => (
-            <Space size="small">
-              <Button onClick={() => onOpenModal(record)}>Подробнее</Button>
-              <Button type="primary" onClick={() => onDrawerOpen(record)}>Редактировать</Button>
-              <Popconfirm
-                title="Вы действительно хотите удалить заказ?"
-                okText="Да"
-                cancelText="Нет"
-                onConfirm={() => onRemove(record._id)}
-              >
-                <Button type="primary" danger>Удалить</Button>
-              </Popconfirm>
-            </Space>
+            <Actions
+              record={record}
+              whatToRemove="заказ"
+              onOpenModal={onOpenModal}
+              onDrawerOpen={onDrawerOpen}
+              onRemove={onRemove}
+              config={{ more: true, edit: true, remove: true }}
+            />
           )}
         />
         <Column
@@ -197,7 +193,7 @@ const Orders: React.FC = () => {
               <Column title="Цена за ед." dataIndex="price" key="price" render={(value: string) => `${value} руб.`} />
               <Column title="Ед. изм." dataIndex="units" key="units" />
               <Column title="Значение" dataIndex="value" key="value" render={(value: string, record: IMainServiceRecord) => `${value} ${record.units === 'м2' ? 'м' : ''}`}  />
-              <Column title="Стоимость" dataIndex="result" key="result" render={(value: string, record: IMainServiceRecord) => `${record.price * record.value} руб.`} />
+              <Column title="Стоимость" dataIndex="result" key="result" render={(_, record: IMainServiceRecord) => `${record.price * record.value} руб.`} />
             </Table>
 
             {order.services.additionals.length ? (
@@ -212,7 +208,7 @@ const Orders: React.FC = () => {
                 <Column title="Цена за ед." dataIndex="price" key="price" render={(value: string) => `${value} руб.`} />
                 <Column title="Ед. изм." dataIndex="units" key="units" />
                 <Column title="Значение" dataIndex="value" key="value" render={(value: string, record: IMainServiceRecord) => `${value} ${record.units === 'м2' ? 'м' : ''}`}  />
-                <Column title="Стоимость" dataIndex="result" key="result" render={(value: string, record: IMainServiceRecord) => `${record.price * record.value} руб.`} />
+                <Column title="Стоимость" dataIndex="result" key="result" render={(_, record: IMainServiceRecord) => `${record.price * record.value} руб.`} />
               </Table>
             ) : <></>}
 

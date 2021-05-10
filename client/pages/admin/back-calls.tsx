@@ -4,13 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import AdminLayout from '../../layouts/AdminLayout'
 
 import OrderDrawer from '../../components/OrderDrawer'
+import Actions from '../../components/Actions'
 
 import Table from 'antd/lib/table'
 import Column from 'antd/lib/table/Column'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
-import Button from 'antd/lib/button'
-import Space from 'antd/lib/space'
-import Popconfirm from 'antd/lib/popconfirm'
 import Form from 'antd/lib/form'
 
 import getDateTime from '../../utils/getDateTime'
@@ -119,17 +117,14 @@ const BackCalls: React.FC = () => {
           title="Действия"
           key="action"
           render={(_, record: IBackCall) => (
-            <Space size="small">
-              <Button type="primary" onClick={() => onDrawerOpen(record)}>Заказ</Button>
-              <Popconfirm
-                title="Вы действительно хотите удалить заявку?"
-                okText="Да"
-                cancelText="Нет"
-                onConfirm={() => onRemove(record._id)}
-              >
-                <Button type="primary" danger>Удалить</Button>
-              </Popconfirm>
-            </Space>
+            <Actions
+              record={record}
+              whatToRemove="заявку"
+              editText="Заказ"
+              onDrawerOpen={onDrawerOpen}
+              onRemove={onRemove}
+              config={{ edit: true, remove: true }}
+            />
           )}
         />
         <Column

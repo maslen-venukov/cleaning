@@ -63,7 +63,7 @@ export const fetchUpdateOrder = (payload: IUpdateOrderPayload, token: string, cb
   })
     .then(({ data }) => {
       dispatch(updateOrder({ id: data._id, data }))
-      console.log(data)
+      message.success('Заказ успешно изменен')
       cb()
     })
     .catch(e => message.error(e.response.data.message))
