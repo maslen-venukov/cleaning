@@ -25,6 +25,7 @@ export interface IOrder {
 export enum OrdersActionTypes {
   SET_ORDERS = 'SET_ORDERS',
   SET_ORDERS_LOADING = 'SET_ORDERS_LOADING',
+  CREATE_ORDER = 'CREATE_ORDER',
   UPDATE_ORDER = 'UPDATE_ORDER',
   REMOVE_ORDER = 'REMOVE_ORDER'
 }
@@ -44,6 +45,11 @@ interface ISetOrders extends IAction {
   payload: IOrder[]
 }
 
+interface ICreateOrder extends IAction {
+  type: OrdersActionTypes.CREATE_ORDER,
+  payload: IOrder
+}
+
 interface ISetOrdersLoading extends IAction {
   type: OrdersActionTypes.SET_ORDERS_LOADING,
   payload: boolean
@@ -59,4 +65,4 @@ interface IRemoveOrder extends IAction {
   payload: string
 }
 
-export type OrdersAction = ISetOrders | ISetOrdersLoading | IUpdateOrder | IRemoveOrder
+export type OrdersAction = ISetOrders | ISetOrdersLoading | ICreateOrder | IUpdateOrder | IRemoveOrder

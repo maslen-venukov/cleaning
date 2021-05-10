@@ -8,19 +8,17 @@ import OrderDrawer from '../../components/OrderDrawer'
 
 import Table from 'antd/lib/table'
 import Column from 'antd/lib/table/Column'
-import Space from 'antd/lib/space'
-import Popconfirm from 'antd/lib/popconfirm'
-import Button from 'antd/lib/button'
 import Modal from 'antd/lib/modal'
 import Checkbox from 'antd/lib/checkbox'
 import Form from 'antd/lib/form'
-import message from 'antd/lib/message'
+import Button from 'antd/lib/button'
 
 import getDateTime from '../../utils/getDateTime'
 import getTotalPrice from '../../utils/getTotalPrice'
 import getAdditionalFields from '../../utils/getAdditionalFields'
+import getOrderData from '../../utils/getOrderData'
 
-import { fetchOrders, fetchRemoveOrder, fetchUpdateOrder, setOrders } from '../../store/actions/orders'
+import { fetchCreateOrder, fetchOrders, fetchRemoveOrder, fetchUpdateOrder, setOrders } from '../../store/actions/orders'
 
 import { RootState } from '../../store/reducers'
 import { IOrder, IOrderService } from '../../types/orders'
@@ -31,7 +29,7 @@ interface IMainServiceRecord extends IMainService {
   value: number
 }
 
-interface IFormValues {
+export interface IFormValues {
   name: string
   connection: string
   address: string
@@ -88,50 +86,41 @@ const Orders: React.FC = () => {
     const mainService = main.find(el => el.name === services.main.name)
     const additionals = getAdditionalFields(additional, record)
     setOrder(record)
-    form.setFieldsValue({ name, connection, address, date: moment(date), main: mainService._id, value: value, comment, additionals })
+    form.setFieldsValue({ name, connection, address, date: moment(date), main: mainService?._id || '', value, comment, additionals })
     setDrawerVisible(true)
   }
 
-  const onDrawerClose = () => setDrawerVisible(false)
+  const onDrawerClose = () => {
+    form.resetFields()
+    setDrawerVisible(false)
+  }
+
+  const onSuccess = () => {
+    form.resetFields()
+    onDrawerClose()
+  }
 
   const onFormFinish = (values: IFormValues) => {
-    const { name, connection, address, date, comment, value, additionals } = values
+    const data = getOrderData(values, main, additional)
+    dispatch(fetchUpdateOrder({ id: order._id, data }, token, onSuccess))
+  }
 
-    const { name: serviceName, price, units } = main.find(service => service._id === values.main)
-
-    const additionalService = additionals ? additionals.map(service => {
-      const options = additional.find(el => el._id === service.name[0]).options
-      const option = options.find(el => el._id === service.name[1])
-      const { value } = service
-      return { ...option, value }
-    }) : []
-
-    const data: IOrder = {
-      name,
-      connection,
-      address,
-      date: new Date(date._d),
-      comment,
-      services: {
-        main: {
-          name: serviceName,
-          price,
-          units,
-          value
-        },
-        additionals: additionalService
-      }
-    }
-
-    dispatch(fetchUpdateOrder({ id: order._id, data }, token, () => {
-      form.resetFields()
-      onDrawerClose()
-    }))
+  const onCreate = (values: IFormValues) => {
+    const data = getOrderData(values, main, additional)
+    dispatch(fetchCreateOrder(data, token, onSuccess))
   }
 
   return (
     <AdminLayout>
       <Table
+        footer={() => (
+          <Button
+            onClick={() => onDrawerOpen({ name: '', connection: '', address: '', date: new Date(Date.now()), services: { main: { name: '', price: 0, units: '', value: 0 }, additionals: [] }, comment: '' })}
+            type="primary"
+            >
+              Добавить
+            </Button>
+        )}
         dataSource={orders}
         rowKey={(record: IOrder) => record._id}
         loading={isLoading}
@@ -193,7 +182,7 @@ const Orders: React.FC = () => {
               <Column title="Цена за ед." dataIndex="price" key="price" render={(value: string) => `${value} руб.`} />
               <Column title="Ед. изм." dataIndex="units" key="units" />
               <Column title="Значение" dataIndex="value" key="value" render={(value: string, record: IMainServiceRecord) => `${value} ${record.units === 'м2' ? 'м' : ''}`}  />
-              <Column title="Стоимость" dataIndex="result" key="result" render={(_, record: IMainServiceRecord) => `${record.price * record.value} руб.`} />
+              <Column title="Стоимость" dataIndex="result" key="result" render={(_, record: IMainServiceRecord) => `${Number(record.price) * record.value} руб.`} />
             </Table>
 
             {order.services.additionals.length ? (
@@ -208,7 +197,7 @@ const Orders: React.FC = () => {
                 <Column title="Цена за ед." dataIndex="price" key="price" render={(value: string) => `${value} руб.`} />
                 <Column title="Ед. изм." dataIndex="units" key="units" />
                 <Column title="Значение" dataIndex="value" key="value" render={(value: string, record: IMainServiceRecord) => `${value} ${record.units === 'м2' ? 'м' : ''}`}  />
-                <Column title="Стоимость" dataIndex="result" key="result" render={(_, record: IMainServiceRecord) => `${record.price * record.value} руб.`} />
+                <Column title="Стоимость" dataIndex="result" key="result" render={(_, record: IMainServiceRecord) => `${Number(record.price) * record.value} руб.`} />
               </Table>
             ) : <></>}
 
@@ -222,6 +211,19 @@ const Orders: React.FC = () => {
             visible={isDrawerVisible}
             form={form}
             onFinish={onFormFinish}
+            isLoading={isServicesLoading}
+            main={main}
+            additional={additional}
+            config={{ connection: true }}
+          />
+
+          <OrderDrawer
+            title="Создание заказа"
+            submitText="Создать"
+            onClose={onDrawerClose}
+            visible={isDrawerVisible}
+            form={form}
+            onFinish={onCreate}
             isLoading={isServicesLoading}
             main={main}
             additional={additional}

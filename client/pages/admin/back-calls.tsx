@@ -14,7 +14,7 @@ import Form from 'antd/lib/form'
 import getDateTime from '../../utils/getDateTime'
 
 import { fetchBackCalls, setBackCalls, fetchRemoveBackCall, fetchProcessBackCall } from '../../store/actions/backCalls'
-import { sendOrder } from '../../store/actions/orders'
+import { fetchCreateOrder } from '../../store/actions/orders'
 
 import { RootState } from '../../store/reducers'
 import { IBackCall } from '../../types/backCalls'
@@ -96,7 +96,7 @@ const BackCalls: React.FC = () => {
       }
     }
 
-    sendOrder(data, token, () => {
+    fetchCreateOrder(data, token, () => {
       dispatch(fetchProcessBackCall(id, token))
       form.resetFields()
       onDrawerClose()

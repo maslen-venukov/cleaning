@@ -14,6 +14,11 @@ const setLoading = (payload: boolean): OrdersAction => ({
   payload
 })
 
+export const createOrder = (payload: IOrder): OrdersAction => ({
+  type: OrdersActionTypes.CREATE_ORDER,
+  payload
+})
+
 const removeOrder = (payload: string): OrdersAction => ({
   type: OrdersActionTypes.REMOVE_ORDER,
   payload
@@ -34,11 +39,12 @@ export const fetchOrders = (token: string) => (dispatch: Dispatch<OrdersAction>)
     .finally(() => dispatch(setLoading(false)))
 }
 
-export const sendOrder = (data: IOrder, token: string, cb: () => void) => {
+export const fetchCreateOrder = (data: IOrder, token: string, cb: () => void) => (dispatch: Dispatch<OrdersAction>) => {
   axios.post('/api/orders', data, {
     headers: { Authorization: token }
   })
-    .then(() => {
+    .then(({ data }) => {
+      dispatch(createOrder(data))
       message.success('Заказ успешно создан')
       cb()
     })

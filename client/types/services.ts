@@ -3,7 +3,7 @@ import { IAction } from '.'
 export interface IMainService {
   _id?: string
   name: string
-  price: number | ''
+  price: number
   units: string
   includes: string[]
   info: string

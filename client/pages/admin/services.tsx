@@ -115,7 +115,7 @@ const Services: React.FC = () => {
         title={() => 'Основные услуги'}
         footer={() => (
           <Button
-            onClick={() => onCreateDrawerOpen({ name: '', price: '', units: '', includes: [], info: '' })}
+            onClick={() => onCreateDrawerOpen({ name: '', price: 0, units: '', includes: [], info: '' })}
             type="primary"
             >
               Добавить

@@ -19,6 +19,12 @@ const orders = (state = initialState, action: OrdersAction): IOrdersState => {
         isLoading: action.payload
       }
 
+    case OrdersActionTypes.CREATE_ORDER:
+      return {
+        ...state,
+        orders: [action.payload, ...state.orders]
+      }
+
     case OrdersActionTypes.UPDATE_ORDER: {
       const { id, data } = action.payload
       const orders = state.orders.map(order => {
