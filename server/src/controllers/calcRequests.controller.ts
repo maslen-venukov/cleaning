@@ -4,6 +4,8 @@ import CalcRequest, { ICalcRequest } from '../models/CalcRequest'
 
 import errorHandler from '../utils/errorHandler'
 import isValidObjectId from '../utils/isValidObjectId'
+import sendEmail from '../utils/sendEmail'
+import getTotalPrice from '../utils/getTotalPrice'
 
 import getAllService from '../services/getAll.service'
 import getByIdService from '../services/getById.service'
@@ -31,8 +33,63 @@ class requestController {
         services
       })
 
-      await calcRequest.save()
-      return res.status(HTTPStatusCodes.Created).json(calcRequest)
+      const { main, additionals } = services
+
+      sendEmail({
+        from: `Клининговая компания ${process.env.NODEMAILER_USER}`,
+        to: `${process.env.NODEMAILER_USER}, ${email}`,
+        subject: 'Расчет стоимости клининговых услуг',
+        html: `
+          <table border="1" cellpadding="5">
+            <caption>Вид услуги</caption>
+            <tr>
+              <th>Название</th>
+              <th>Цена за ед.</th>
+              <th>Ед. изм.</th>
+              <th>Значение</th>
+              <th>Стоимость</th>
+            </tr>
+            <tr>
+              <td>${main.name}</td>
+              <td>${main.price} руб.</td>
+              <td>${main.units}</td>
+              <td>${main.value}</td>
+              <td>${main.value * main.price}</td>
+            </tr>
+          </table>
+          ${additionals.length ? (
+            `<br>
+            <table border="1" cellpadding="5">
+              <caption>Дополнительные услуги</caption>
+              <tr>
+                <th>Название</th>
+                <th>Цена за ед.</th>
+                <th>Ед. изм.</th>
+                <th>Значение</th>
+                <th>Стоимость</th>
+              </tr>
+              ${additionals.reduce((acc, el) => acc += `
+                <tr>
+                  <td>${el.name}</td>
+                  <td>${el.price} руб.</td>
+                  <td>${el.units}</td>
+                  <td>${el.value}</td>
+                  <td>${el.value * el.price}</td>
+                </tr>
+              `, '')}
+            </table>`
+          ) : ''}
+          <p>Общая стоимость — ${getTotalPrice(calcRequest)} руб.</p>
+        `
+      }, async err => {
+        if(err) {
+          console.log(err)
+          return errorHandler(res, HTTPStatusCodes.BadRequest, 'Не удалось отправить email')
+        } else {
+          await calcRequest.save()
+          return res.status(HTTPStatusCodes.Created).json(calcRequest)
+        }
+      })
     } catch (e) {
       console.log(e)
       return errorHandler(res)

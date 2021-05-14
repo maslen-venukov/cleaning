@@ -1,10 +1,4 @@
-import { IAction } from '.'
-import { IAdditionalServiceOption } from './services'
-
-interface ICalcRequestAdditional {
-  name: string
-  options: IAdditionalServiceOption & { value: number }
-}
+import { IService, IAction } from '.'
 
 export interface ICalcRequest {
   _id?: string
@@ -13,13 +7,8 @@ export interface ICalcRequest {
   date?: Date
   isProcessed?: boolean
   services: {
-    main: {
-      name: string
-      price: number
-      units: string
-      value: number
-    },
-    additionals?: ICalcRequestAdditional[]
+    main: IService,
+    additionals?: IService[]
   }
 }
 

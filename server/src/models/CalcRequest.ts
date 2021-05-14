@@ -1,11 +1,6 @@
 import { model, Schema, Document } from 'mongoose'
 
-import { IAdditionalServiceOption } from './AdditionalService'
-
-interface ICalcRequestAdditional {
-  name: string
-  options: IAdditionalServiceOption & { value: number }
-}
+import { IService } from '../types'
 
 export interface ICalcRequest {
   _id?: string
@@ -14,13 +9,8 @@ export interface ICalcRequest {
   date: Date
   isProcessed: boolean
   services: {
-    main: {
-      name: string
-      price: number
-      units: string
-      value: number
-    },
-    additionals?: ICalcRequestAdditional[]
+    main: IService,
+    additionals?: IService[]
   }
 }
 

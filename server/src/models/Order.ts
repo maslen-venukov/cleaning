@@ -1,11 +1,6 @@
 import { model, Schema, Document } from 'mongoose'
 
-import { IAdditionalServiceOption } from './AdditionalService'
-
-interface IOrderAdditional {
-  name: string
-  options: IAdditionalServiceOption & { value: number }
-}
+import { IService } from '../types'
 
 export interface IOrder {
   _id?: string
@@ -16,13 +11,8 @@ export interface IOrder {
   isCompleted: boolean
   comment?: string
   services: {
-    main: {
-      name: string
-      price: number
-      units: string
-      value: number
-    },
-    additionals?: IOrderAdditional[]
+    main: IService,
+    additionals?: IService[]
   }
 }
 

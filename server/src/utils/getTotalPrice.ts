@@ -1,5 +1,5 @@
-import { IOrder } from '../types/orders'
-import { ICalcRequest } from '../types/calcRequests'
+import { IOrder } from '../models/Order'
+import { ICalcRequest } from '../models/CalcRequest'
 
 const getTotalPrice = (order: IOrder | ICalcRequest) => {
   if(!order) {

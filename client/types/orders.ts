@@ -1,12 +1,4 @@
-import { IAction } from '.'
-
-export interface IOrderService {
-  _id?: string
-  name: string
-  price: number
-  units: string
-  value: number
-}
+import { IService, IAction } from '.'
 
 export interface IOrder {
   _id?: string
@@ -17,8 +9,8 @@ export interface IOrder {
   isCompleted?: boolean
   comment?: string
   services: {
-    main: IOrderService
-    additionals: IOrderService[]
+    main: IService
+    additionals: IService[]
   }
 }
 

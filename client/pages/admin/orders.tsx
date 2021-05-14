@@ -21,7 +21,8 @@ import getPostData from '../../utils/getPostData'
 import { fetchCreateOrder, fetchOrders, fetchRemoveOrder, fetchUpdateOrder, setOrders } from '../../store/actions/orders'
 
 import { RootState } from '../../store/reducers'
-import { IOrder, IOrderService } from '../../types/orders'
+import { IService } from '../../types'
+import { IOrder } from '../../types/orders'
 import { IMainService } from '../../types/services'
 import Actions from '../../components/Actions'
 
@@ -176,7 +177,7 @@ const Orders: React.FC = () => {
             <Table
               dataSource={[order.services.main]}
               title={() => 'Основная услуга'}
-              rowKey={(record: IOrderService) => record.name}
+              rowKey={(record: IService) => record.name}
               pagination={false}
               style={{ marginBottom: 15 }}
             >
@@ -191,7 +192,7 @@ const Orders: React.FC = () => {
               <Table
                 dataSource={order.services.additionals}
                 title={() => 'Дополнительные услуги'}
-                rowKey={(record: IOrderService) => record.name}
+                rowKey={(record: IService) => record.name}
                 pagination={false}
                 style={{ marginBottom: 30 }}
               >
