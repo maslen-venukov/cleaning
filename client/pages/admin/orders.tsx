@@ -16,7 +16,7 @@ import Button from 'antd/lib/button'
 import getDateTime from '../../utils/getDateTime'
 import getTotalPrice from '../../utils/getTotalPrice'
 import getAdditionalFields from '../../utils/getAdditionalFields'
-import getOrderData from '../../utils/getOrderData'
+import getPostData from '../../utils/getPostData'
 
 import { fetchCreateOrder, fetchOrders, fetchRemoveOrder, fetchUpdateOrder, setOrders } from '../../store/actions/orders'
 
@@ -29,7 +29,7 @@ interface IMainServiceRecord extends IMainService {
   value: number
 }
 
-export interface IFormValues {
+interface IFormValues {
   name: string
   connection: string
   address: string
@@ -53,7 +53,8 @@ const Orders: React.FC = () => {
 
   const [order, setOrder] = useState<IOrder | null>(null)
   const [isModalVisible, setModalVisible] = useState<boolean>(false)
-  const [isDrawerVisible, setDrawerVisible] = useState<boolean>(false)
+  const [isEditDrawerVisible, setEditDrawerVisible] = useState<boolean>(false)
+  const [isCreateDrawerVisible, setCreateDrawerVisible] = useState<boolean>(false)
 
   useEffect(() => {
     if(!token) {
@@ -80,19 +81,20 @@ const Orders: React.FC = () => {
 
   const onCloseModal = () => setModalVisible(false)
 
-  const onDrawerOpen = (record: IOrder) => {
+  const onEditDrawerOpen = (record: IOrder) => {
     const { name, connection, address, date, services, comment } = record
     const { value } = services.main
     const mainService = main.find(el => el.name === services.main.name)
     const additionals = getAdditionalFields(additional, record)
     setOrder(record)
     form.setFieldsValue({ name, connection, address, date: moment(date), main: mainService?._id || '', value, comment, additionals })
-    setDrawerVisible(true)
+    setEditDrawerVisible(true)
   }
 
   const onDrawerClose = () => {
     form.resetFields()
-    setDrawerVisible(false)
+    setEditDrawerVisible(false)
+    setCreateDrawerVisible(false)
   }
 
   const onSuccess = () => {
@@ -101,12 +103,12 @@ const Orders: React.FC = () => {
   }
 
   const onFormFinish = (values: IFormValues) => {
-    const data = getOrderData(values, main, additional)
+    const data = getPostData(values, main, additional)
     dispatch(fetchUpdateOrder({ id: order._id, data }, token, onSuccess))
   }
 
   const onCreate = (values: IFormValues) => {
-    const data = getOrderData(values, main, additional)
+    const data = getPostData(values, main, additional)
     dispatch(fetchCreateOrder(data, token, onSuccess))
   }
 
@@ -115,7 +117,7 @@ const Orders: React.FC = () => {
       <Table
         footer={() => (
           <Button
-            onClick={() => onDrawerOpen({ name: '', connection: '', address: '', date: new Date(Date.now()), services: { main: { name: '', price: 0, units: '', value: 0 }, additionals: [] }, comment: '' })}
+            onClick={() => setCreateDrawerVisible(true)}
             type="primary"
             >
               Добавить
@@ -137,7 +139,7 @@ const Orders: React.FC = () => {
               record={record}
               whatToRemove="заказ"
               onOpenModal={onOpenModal}
-              onDrawerOpen={onDrawerOpen}
+              onDrawerOpen={onEditDrawerOpen}
               onRemove={onRemove}
               config={{ more: true, edit: true, remove: true }}
             />
@@ -208,7 +210,7 @@ const Orders: React.FC = () => {
             title="Редактирование заказа"
             submitText="Редактировать"
             onClose={onDrawerClose}
-            visible={isDrawerVisible}
+            visible={isEditDrawerVisible}
             form={form}
             onFinish={onFormFinish}
             isLoading={isServicesLoading}
@@ -221,7 +223,7 @@ const Orders: React.FC = () => {
             title="Создание заказа"
             submitText="Создать"
             onClose={onDrawerClose}
-            visible={isDrawerVisible}
+            visible={isCreateDrawerVisible}
             form={form}
             onFinish={onCreate}
             isLoading={isServicesLoading}

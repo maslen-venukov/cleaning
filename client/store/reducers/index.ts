@@ -6,13 +6,15 @@ import backCalls from './backCalls'
 import reviews from './reviews'
 import services from './services'
 import orders from './orders'
+import calcRequests from './calcRequests'
 
 const rootReducer = combineReducers({
   user,
   backCalls,
   reviews,
   services,
-  orders
+  orders,
+  calcRequests
 })
 
 export const reducer = (state, action) => {

@@ -78,25 +78,25 @@ const OrderDrawer: React.FC<IOrderDrawerProps> = ({ title, submitText, onClose, 
           <DatePicker showTime={{ format: 'HH:mm' }} format="YYYY-MM-DD HH:mm" />
         </Form.Item>
 
-        <Form.Item
-          label="Услуга"
-          name="main"
-          rules={[{ required: true, message: 'Выберите услугу!' }]}
-        >
-          <Select
-            showSearch
-            placeholder="Выберите услугу"
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
+          <Form.Item
+            label="Услуга"
+            name="main"
+            rules={[{ required: true, message: 'Выберите услугу!' }]}
           >
             {!isLoading ? (
-              main.map(service => (
-                <Select.Option key={service._id} value={service._id}>{service.name}</Select.Option>
-              ))
+              <Select
+                showSearch
+                placeholder="Выберите услугу"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                {main.map(service => (
+                  <Select.Option key={service._id} value={service._id}>{service.name}</Select.Option>
+                ))}
+              </Select>
             ) : <Spin />}
-          </Select>
-        </Form.Item>
+          </Form.Item>
 
         <Form.Item
           label="Площадь"

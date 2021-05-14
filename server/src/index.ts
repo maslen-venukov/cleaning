@@ -12,6 +12,7 @@ import reviewsRouter from './routes/reviews.route'
 import mainServiceRouter from './routes/mainService.route'
 import additionalServiceRouter from './routes/additionalService.route'
 import ordersRouter from './routes/orders.route'
+import calcRequestsRouter from './routes/calcRequests.route'
 
 const PORT = process.env.PORT || 5000
 const MONGO_URI = process.env.MONGO_URI
@@ -28,6 +29,7 @@ app.use('/api/reviews', reviewsRouter)
 app.use('/api/services/main', mainServiceRouter)
 app.use('/api/services/additional', additionalServiceRouter)
 app.use('/api/orders', ordersRouter)
+app.use('/api/requests/calc', calcRequestsRouter)
 
 const start = async () => {
   try {

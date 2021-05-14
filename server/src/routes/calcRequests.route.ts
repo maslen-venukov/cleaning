@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import controller from '../controllers/backCalls.controller'
+import controller from '../controllers/calcRequests.controller'
 import auth from '../middleware/auth'
 
 const router = Router()

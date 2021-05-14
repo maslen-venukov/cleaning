@@ -15,4 +15,4 @@ const backCallSchema = new Schema({
   isProcessed: { type: Boolean, default: false }
 })
 
-export default model<IBackCall & Document>('BackCall', backCallSchema)
+export default model<IBackCall & Document>('Back_Call', backCallSchema)
