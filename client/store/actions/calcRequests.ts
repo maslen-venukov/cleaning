@@ -34,9 +34,12 @@ export const fetchCalcRequests = (token: string) => (dispatch: Dispatch<CalcRequ
     .finally(() => dispatch(setLoading(false)))
 }
 
-export const sendCalcRequest = (data: ICalcRequest) => {
+export const sendCalcRequest = (data: ICalcRequest, cb: () => void) => {
   axios.post('/api/requests/calc', data)
-    .then(() => message.success('Вам на почту отправлено сообщение с описанием и стоимостью услуг', 5))
+    .then(() => {
+      message.success('Вам на почту отправлено сообщение с описанием и стоимостью услуг', 5)
+      cb()
+    })
     .catch(e => message.error(e.response.data.message))
 }
 

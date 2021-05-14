@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Link from 'next/link'
 import axios from 'axios'
 
@@ -54,9 +54,9 @@ interface IFormValues {
 }
 
 const Home: React.FC<IHomeProps> = ({ data }) => {
-  const dispatch = useDispatch()
-
   const { main, additional, isLoading } = useSelector((state: RootState) => state.services)
+
+  const [form] = Form.useForm()
 
   useEffect(() => {
     const { error } = data
@@ -67,7 +67,7 @@ const Home: React.FC<IHomeProps> = ({ data }) => {
 
   const onFormFinish = (values: IFormValues) => {
     const data = getPostData(values, main, additional)
-    sendCalcRequest(data)
+    sendCalcRequest(data, form.resetFields)
   }
 
   return (
@@ -80,7 +80,7 @@ const Home: React.FC<IHomeProps> = ({ data }) => {
       <Space direction="vertical" size="large">
         <Container>
           <Typography.Title level={3}>Калькулятор клининговых услуг</Typography.Title>
-          <Form onFinish={onFormFinish}>
+          <Form form={form} onFinish={onFormFinish}>
             <Form.Item
               label="Имя"
               name="name"

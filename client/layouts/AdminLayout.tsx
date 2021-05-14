@@ -26,19 +26,18 @@ const { Sider, Header, Content } = Layout
 
 interface IMenuItem {
   label: string
-  href?: string
-  key: string
+  href: string
   icon: any
 }
 
 const AdminLayout: React.FC = ({ children }) => {
   const menu: IMenuItem[] = [
-    { label: 'Услуги', href: '/admin/services', key: 'services', icon: DollarOutlined },
-    { label: 'Обратные звонки', href: '/admin/back-calls', key: 'back-calls', icon: PhoneOutlined },
-    { label: 'Заявки (калькулятор)', href: '/admin/requests', key: 'requests', icon: CalculatorOutlined },
-    { label: 'Заявки (фото)', href: '/admin/photo', key: 'photo', icon: PictureOutlined },
-    { label: 'Отзывы', href: '/admin/reviews', key: 'reviews', icon: LikeOutlined },
-    { label: 'Заказы', href: '/admin/orders', key: 'orders', icon: SolutionOutlined }
+    { label: 'Услуги', href: '/admin/services', icon: DollarOutlined },
+    { label: 'Обратные звонки', href: '/admin/back-calls', icon: PhoneOutlined },
+    { label: 'Заявки (калькулятор)', href: '/admin/requests/calc', icon: CalculatorOutlined },
+    { label: 'Заявки (фото)', href: '/admin/requests/photo', icon: PictureOutlined },
+    { label: 'Отзывы', href: '/admin/reviews', icon: LikeOutlined },
+    { label: 'Заказы', href: '/admin/orders', icon: SolutionOutlined }
   ]
 
   const router = useRouter()
@@ -46,11 +45,13 @@ const AdminLayout: React.FC = ({ children }) => {
   const currentUser = useSelector((state: RootState) => state.user.currentUser)
 
   const [isCollapsed, setCollapsed] = useState<boolean>(false)
-  const [current, setCurrent] = useState<string>('')
+  const [currentPage, setCurrentPage] = useState<string>('')
+
+  const getKey = (str: string) => str.replace('/admin/', '')
 
   useEffect(() => {
-    const page = router.pathname.replace('/admin/', '')
-    setCurrent(page)
+    const key = getKey(router.pathname)
+    setCurrentPage(key)
   }, [])
 
   const onToggle = () => setCollapsed(!isCollapsed)
@@ -65,9 +66,9 @@ const AdminLayout: React.FC = ({ children }) => {
       </Head>
       <Layout className="layout admin">
         <Sider trigger={null} collapsible collapsed={isCollapsed}>
-          <Menu theme="dark" mode="inline" selectedKeys={[current]}>
+          <Menu theme="dark" mode="inline" selectedKeys={[currentPage]}>
             {menu.map((item: IMenuItem) => (
-              <Menu.Item key={item.key} icon={item.icon.render()}>
+              <Menu.Item key={item.href.replace('/admin/', '')} icon={item.icon.render()}>
                 <Link href={item.href}>
                   <a>{item.label}</a>
                 </Link>

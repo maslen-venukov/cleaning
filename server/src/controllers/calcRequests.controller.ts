@@ -37,7 +37,7 @@ class requestController {
 
       sendEmail({
         from: `Клининговая компания ${process.env.NODEMAILER_USER}`,
-        to: `${process.env.NODEMAILER_USER}, ${email}`,
+        to: email,
         subject: 'Расчет стоимости клининговых услуг',
         html: `
           <table border="1" cellpadding="5">

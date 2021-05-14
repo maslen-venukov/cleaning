@@ -21,14 +21,9 @@ import getPostData from '../../utils/getPostData'
 import { fetchCreateOrder, fetchOrders, fetchRemoveOrder, fetchUpdateOrder, setOrders } from '../../store/actions/orders'
 
 import { RootState } from '../../store/reducers'
-import { IService } from '../../types'
+import { IService, IMainServiceRecord } from '../../types'
 import { IOrder } from '../../types/orders'
-import { IMainService } from '../../types/services'
 import Actions from '../../components/Actions'
-
-interface IMainServiceRecord extends IMainService {
-  value: number
-}
 
 interface IFormValues {
   name: string

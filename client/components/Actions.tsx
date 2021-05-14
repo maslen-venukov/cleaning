@@ -22,7 +22,7 @@ interface IActionsProps {
   }
 }
 
-const Actions: React.FC<IActionsProps> = ({ record, whatToRemove, editText = 'Редактировать' ,onOpenModal, onDrawerOpen, onRemove, config = {} }) => {
+const Actions: React.FC<IActionsProps> = ({ record, whatToRemove, editText = 'Редактировать', onOpenModal, onDrawerOpen, onRemove, config = {} }) => {
   return (
     <Space size="small">
       {config.more ? <Button onClick={() => onOpenModal(record)}>Подробнее</Button> : <></>}

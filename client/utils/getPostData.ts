@@ -2,6 +2,7 @@ import { IMainService, IAdditionalService } from '../types/services'
 
 interface IFormValues {
   name: string
+  phone?: string
   email?: string
   connection?: string
   address?: string
@@ -13,7 +14,7 @@ interface IFormValues {
 }
 
 const getPostData = (values: IFormValues, main: IMainService[], additional: IAdditionalService[]): any => {
-  const { main: mainId, additionals, value, date } = values
+  const { main: mainId, additionals, value, date, phone, email, connection } = values
 
   const { name: mainServiceName, price, units } = main.find(service => service._id === mainId)
 
@@ -26,6 +27,7 @@ const getPostData = (values: IFormValues, main: IMainService[], additional: IAdd
 
   const data = {
     ...values,
+    connection: connection || phone || email,
     date: values.date ? new Date(date._d) : undefined,
     services: {
       main: {

@@ -8,7 +8,7 @@ import Actions from '../../components/Actions'
 
 import Table from 'antd/lib/table'
 import Column from 'antd/lib/table/Column'
-import Checkbox from 'antd/lib/checkbox/Checkbox'
+import Checkbox from 'antd/lib/checkbox'
 import Form from 'antd/lib/form'
 
 import getDateTime from '../../utils/getDateTime'
@@ -18,7 +18,7 @@ import { fetchCreateOrder } from '../../store/actions/orders'
 
 import { RootState } from '../../store/reducers'
 import { IBackCall } from '../../types/backCalls'
-import { IOrder } from '../../types/orders'
+import getPostData from '../../utils/getPostData'
 
 interface IFormValues {
   name: string
@@ -68,39 +68,13 @@ const BackCalls: React.FC = () => {
   const onProcess = (id: string) => dispatch(fetchProcessBackCall(id, token))
 
   const onFormFinish = (values: IFormValues) => {
-    const { name, phone: connection, address, date, comment, value, additionals } = values
-
-    const { name: serviceName, price, units } = main.find(service => service._id === values.main)
-
-    const additionalService = additionals ? additionals.map(service => {
-      const options = additional.find(el => el._id === service.name[0]).options
-      const option = options.find(el => el._id === service.name[1])
-      const { value } = service
-      return { ...option, value }
-    }) : []
-
-    const data: IOrder = {
-      name,
-      connection,
-      address,
-      date: new Date(date._d),
-      comment,
-      services: {
-        main: {
-          name: serviceName,
-          price,
-          units,
-          value
-        },
-        additionals: additionalService
-      }
-    }
-
-    fetchCreateOrder(data, token, () => {
+    const data = getPostData(values, main, additional)
+    const onSuccess = () => {
       dispatch(fetchProcessBackCall(id, token))
       form.resetFields()
       onDrawerClose()
-    })
+    }
+    dispatch(fetchCreateOrder(data, token, onSuccess))
   }
 
   return (
