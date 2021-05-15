@@ -69,7 +69,19 @@ $shadow: 0 2px 6px rgba(#000, .1)
   &__content
     padding: 15px
 
-.edit-service-space
+.edit-service-space,
+.drag-form
   .ant-space-item
     &:first-child
       width: 100%
+
+.drag-area
+  &.ant-upload-drag,
+  .ant-upload-btn
+    height: auto
+
+.calculator-form,
+.drag-form
+  .ant-form-item
+    &:last-child
+      margin-bottom: 0

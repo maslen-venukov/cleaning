@@ -7,6 +7,7 @@ import reviews from './reviews'
 import services from './services'
 import orders from './orders'
 import calcRequests from './calcRequests'
+import photoRequests from './photoRequests'
 
 const rootReducer = combineReducers({
   user,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   reviews,
   services,
   orders,
-  calcRequests
+  calcRequests,
+  photoRequests
 })
 
 export const reducer = (state, action) => {

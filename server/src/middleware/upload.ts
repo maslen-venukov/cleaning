@@ -3,11 +3,11 @@ import { v4 as uuidv4 } from 'uuid'
 
 const storage = diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads')
+    cb(null, 'uploads/')
   },
   filename: (req, file, cb) => {
-    const fileNameArr = file.originalname.split('.')
-    const ext = fileNameArr[fileNameArr.length - 1]
+    console.log(req)
+    const ext = file.originalname.split('.').pop()
     cb(null, `${uuidv4()}.${ext}`)
   }
 })
@@ -20,9 +20,14 @@ const fileFilter = (req, file, cb) => {
   }
 }
 
+const limits = {
+  fileSize: 1024 ** 2 * 5
+}
+
 const upload = multer({
   storage,
-  fileFilter
+  fileFilter,
+  limits
 })
 
 export default upload
