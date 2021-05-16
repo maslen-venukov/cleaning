@@ -116,7 +116,7 @@ const Header: React.FC = () => {
         onCancel={() => setModalVisible(false)}
         className="header__modal"
       >
-        <Form form={form} onFinish={onFormFinish}>
+        <Form form={form} onFinish={onFormFinish} className="back-call-form">
           <Form.Item
             label="Имя"
             name="name"
@@ -133,7 +133,7 @@ const Header: React.FC = () => {
             <Input />
           </Form.Item>
 
-          <Form.Item style={{ margin: 0 }}>
+          <Form.Item>
             <Row justify="end">
               <Button type="primary" htmlType="submit">
                 Заказать звонок

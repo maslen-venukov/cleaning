@@ -49,7 +49,7 @@ const Home: React.FC<IHomeProps> = ({ data }) => {
         backgroundImage="intro.jpg"
       />
 
-      <Space direction="vertical" size="large">
+      <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <Calculator />
 
         <PhotoRequest />

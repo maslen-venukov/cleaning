@@ -5,9 +5,11 @@ import MainLayout from '../../layouts/MainLayout'
 
 import Hero from '../../components/Hero'
 import Container from '../../components/Container'
+import HomeBtn from '../../components/HomeBtn'
 
 import Typography from 'antd/lib/typography'
 import Alert from 'antd/lib/alert'
+import Result from 'antd/lib/result'
 import List from 'antd/lib/list'
 import message from 'antd/lib/message'
 import CheckCircleTwoTone from '@ant-design/icons/lib/icons/CheckCircleTwoTone'
@@ -31,7 +33,7 @@ const Service: React.FC<IServiceProps> = ({ data }) => {
     }
   }, [data.error])
 
-  return (
+  return data.service ? (
     <MainLayout title={data.service.name}>
       <Hero
         title={data.service.name}
@@ -54,6 +56,13 @@ const Service: React.FC<IServiceProps> = ({ data }) => {
         />
       </Container>
     </MainLayout>
+  ) : (
+    <Result
+      status="500"
+      title="Что-то пошло не так"
+      subTitle={data.error}
+      extra={<HomeBtn />}
+    />
   )
 }
 
@@ -69,7 +78,7 @@ export const getServerSideProps = async ({ params }) => {
     const res = await axios.get(`/api/services/main/${id}`)
     data.service = res.data
   } catch (e) {
-    data.error = e.response?.data.message || 'Ошибка при загрузке отзывов'
+    data.error = e.response?.data.message || 'Ошибка при загрузке услуг'
   }
 
   return {

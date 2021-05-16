@@ -13,6 +13,7 @@ import Modal from 'antd/lib/modal'
 import Checkbox from 'antd/lib/checkbox'
 import Form from 'antd/lib/form'
 import Button from 'antd/lib/button'
+import message from 'antd/lib/message'
 
 import getDateTime from '../../utils/getDateTime'
 import getTotalPrice from '../../utils/getTotalPrice'
@@ -54,7 +55,7 @@ const Orders: React.FC = () => {
   const onComplete = (id: string) => {
     const order = orders.find(order => order._id === id)
     const payload = { id, data: { ...order, isCompleted: !order.isCompleted } }
-    dispatch(fetchUpdateOrder(payload, token, () => ({})))
+    dispatch(fetchUpdateOrder(payload, token))
   }
 
   const onOpenModal = (record: IOrder) => {
@@ -83,10 +84,12 @@ const Orders: React.FC = () => {
   const onSuccess = () => {
     form.resetFields()
     onDrawerClose()
+    message.success('Заказ успешно изменен')
   }
 
   const onFormFinish = (values: IFormValues) => {
     const data = getPostData(values, main, additional)
+    console.log(data)
     dispatch(fetchUpdateOrder({ id: order._id, data }, token, onSuccess))
   }
 
@@ -137,6 +140,19 @@ const Orders: React.FC = () => {
           )}
         />
       </Table>
+
+      <OrderDrawer
+        title="Создание заказа"
+        submitText="Создать"
+        onClose={onDrawerClose}
+        visible={isCreateDrawerVisible}
+        form={form}
+        onFinish={onCreate}
+        isLoading={isServicesLoading}
+        main={main}
+        additional={additional}
+        config={{ connection: true }}
+      />
 
       {order && (
         <>
@@ -196,19 +212,6 @@ const Orders: React.FC = () => {
             visible={isEditDrawerVisible}
             form={form}
             onFinish={onFormFinish}
-            isLoading={isServicesLoading}
-            main={main}
-            additional={additional}
-            config={{ connection: true }}
-          />
-
-          <OrderDrawer
-            title="Создание заказа"
-            submitText="Создать"
-            onClose={onDrawerClose}
-            visible={isCreateDrawerVisible}
-            form={form}
-            onFinish={onCreate}
             isLoading={isServicesLoading}
             main={main}
             additional={additional}

@@ -32,7 +32,18 @@ interface IOrderDrawerProps extends DrawerProps, FormProps {
   config?: IOrderDrawerConfig
 }
 
-const OrderDrawer: React.FC<IOrderDrawerProps> = ({ title, submitText, onClose, visible, form, onFinish, isLoading, main, additional, config }) => {
+const OrderDrawer: React.FC<IOrderDrawerProps> = ({
+  title,
+  submitText,
+  onClose,
+  visible,
+  form,
+  onFinish,
+  isLoading,
+  main,
+  additional,
+  config
+}) => {
   const contact = getContactStrings(config)
 
   return (

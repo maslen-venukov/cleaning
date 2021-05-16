@@ -63,12 +63,15 @@ const Reviews: React.FC = () => {
     dispatch(fetchUpdateReview(payload, token))
   }
 
-  const onFormFinish = (values: IFormData) => {
-    const payload = { id, data: { ...values, isProcessed: true } }
-    dispatch(fetchUpdateReview(payload, token))
+  const onSuccess = () => {
     form.resetFields()
     onDrawerClose()
     message.success('Отзыв отправлен')
+  }
+
+  const onFormFinish = (values: IFormData) => {
+    const payload = { id, data: { ...values, isProcessed: true } }
+    dispatch(fetchUpdateReview(payload, token, onSuccess))
   }
 
   return (

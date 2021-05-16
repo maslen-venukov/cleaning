@@ -42,12 +42,17 @@ export const fetchAllReviews = (token: string) => (dispatch: Dispatch<ReviewsAct
     .finally(() => dispatch(setLoading(false)))
 }
 
-export const fetchUpdateReview = (payload: IUpdateReviewPayload, token: string) => (dispatch: Dispatch<ReviewsAction>) => {
+export const fetchUpdateReview = (payload: IUpdateReviewPayload, token: string, cb?: () => void) => (dispatch: Dispatch<ReviewsAction>) => {
   const { id, data } = payload
   axios.put(`/api/reviews/${id}`, data, {
     headers: { Authorization: token}
   })
-    .then(({ data }) => dispatch(updateReview({ id: data._id, data })))
+    .then(({ data }) => {
+      dispatch(updateReview({ id: data._id, data }))
+      if(cb) {
+        cb()
+      }
+    })
     .catch(e => message.error(e.response.data.message))
 }
 

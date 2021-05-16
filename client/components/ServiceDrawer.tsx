@@ -19,7 +19,15 @@ interface IServiceDrawerProps extends DrawerProps, FormProps {
   currentService: Service
 }
 
-const ServiceDrawer: React.FC<IServiceDrawerProps> = ({ title, submitText, currentService, onClose, visible, form, onFinish }) => {
+const ServiceDrawer: React.FC<IServiceDrawerProps> = ({
+  title,
+  submitText,
+  currentService,
+  onClose,
+  visible,
+  form,
+  onFinish
+}) => {
   return (
     <Drawer
       title={title}

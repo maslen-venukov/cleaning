@@ -4,13 +4,13 @@ import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
 import Typography from 'antd/lib/typography'
 
-interface IIntroProps {
+interface IHeroProps {
   title: string
   subtitle?: string
   backgroundImage?: string
 }
 
-const Intro: React.FC<IIntroProps> = ({ title, subtitle, backgroundImage }) => {
+const Hero: React.FC<IHeroProps> = ({ title, subtitle, backgroundImage }) => {
   return (
     <Row
       align="middle"
@@ -26,4 +26,4 @@ const Intro: React.FC<IIntroProps> = ({ title, subtitle, backgroundImage }) => {
   )
 }
 
-export default Intro
+export default Hero

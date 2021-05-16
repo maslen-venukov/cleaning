@@ -19,17 +19,7 @@ const Login: React.FC = () => {
   const dispatch = useDispatch()
   const router = useRouter()
 
-  const layout = {
-    fields: {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 16 }
-    },
-    button: {
-      wrapperCol: { offset: 4, span: 16 }
-    }
-  }
-
-  const onLoginFormFinish = (values: ILoginFormValues) => {
+  const onFinish = (values: ILoginFormValues) => {
     const { login, password } = values
     const redirect = () => router.push('/admin')
     dispatch(logIn(login, password, redirect))
@@ -38,10 +28,7 @@ const Login: React.FC = () => {
   return (
     <Row justify="center" align="middle" className="login">
       <Col lg={8} md={12} sm={16} xs={20}>
-        <Form
-          {...layout.fields}
-          onFinish={onLoginFormFinish}
-        >
+        <Form onFinish={onFinish}>
           <Form.Item
             label="Логин"
             name="login"
@@ -58,7 +45,7 @@ const Login: React.FC = () => {
             <Input.Password />
           </Form.Item>
 
-          <Form.Item {...layout.button}>
+          <Form.Item>
             <Button type="primary" htmlType="submit">
               Войти
             </Button>
