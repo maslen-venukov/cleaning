@@ -5,6 +5,7 @@ import PhotoRequest, { IPhotoRequest } from '../models/PhotoRequest'
 import errorHandler from '../utils/errorHandler'
 import isValidObjectId from '../utils/isValidObjectId'
 import sendEmail from '../utils/sendEmail'
+import getServerUrl from '../utils/getServerUrl'
 
 import getAllService from '../services/getAll.service'
 import getByIdService from '../services/getById.service'
@@ -100,6 +101,8 @@ class requestController {
 
       const { name, email, images } = photoRequest
 
+      const url = getServerUrl(req)
+
       sendEmail({
         from: `Клининговая компания ${process.env.NODEMAILER_USER}`,
         to: email,
@@ -108,7 +111,7 @@ class requestController {
           <p>Здравствуйте, ${name}</p>
           <p>Стоимость оказания клининговых услуг составляет ${price} руб.</p>
           ${comment ? `<p>${comment}</p>` : ''}
-          ${images.reduce((acc, el) => acc += `<img src="${el}" />`, '')}
+          ${images.reduce((acc, el) => acc += `<img src="${url}${el}" />`, '')}
         `
       }, async err => {
         if(err) {

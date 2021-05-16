@@ -12,11 +12,12 @@ import { wrapper } from '../store'
 import { auth, setReady } from '../store/actions/user'
 import { fetchServices } from '../store/actions/services'
 
+import { API_URL } from '../types'
 import { RootState } from '../store/reducers'
 
 import '../styles/index.sass'
 
-axios.defaults.baseURL = 'http://localhost:5000'
+axios.defaults.baseURL = API_URL
 
 const WrappedApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   const dispatch = useDispatch()

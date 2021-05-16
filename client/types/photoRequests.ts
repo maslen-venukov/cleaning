@@ -4,6 +4,7 @@ export interface IPhotoRequest {
   _id?: string
   name: string
   email: string
+  date: Date
   isProcessed: boolean
   images: string[]
 }

@@ -12,26 +12,14 @@ import Checkbox from 'antd/lib/checkbox'
 import Form from 'antd/lib/form'
 
 import getDateTime from '../../utils/getDateTime'
+import getPostData from '../../utils/getPostData'
 
 import { fetchBackCalls, setBackCalls, fetchRemoveBackCall, fetchProcessBackCall } from '../../store/actions/backCalls'
 import { fetchCreateOrder } from '../../store/actions/orders'
 
 import { RootState } from '../../store/reducers'
 import { IBackCall } from '../../types/backCalls'
-import getPostData from '../../utils/getPostData'
-
-interface IFormValues {
-  name: string
-  phone: string
-  address: string
-  date: {
-    _d: Date
-  }
-  comment?: string
-  main: string
-  value: number
-  additionals: { name: string[], value: number }[]
-}
+import { IFormValues } from '../../types'
 
 const BackCalls: React.FC = () => {
   const dispatch = useDispatch()
@@ -67,13 +55,14 @@ const BackCalls: React.FC = () => {
   const onRemove = (id: string) => dispatch(fetchRemoveBackCall(id, token))
   const onProcess = (id: string) => dispatch(fetchProcessBackCall(id, token))
 
+  const onSuccess = () => {
+    dispatch(fetchProcessBackCall(id, token))
+    form.resetFields()
+    onDrawerClose()
+  }
+
   const onFormFinish = (values: IFormValues) => {
     const data = getPostData(values, main, additional)
-    const onSuccess = () => {
-      dispatch(fetchProcessBackCall(id, token))
-      form.resetFields()
-      onDrawerClose()
-    }
     dispatch(fetchCreateOrder(data, token, onSuccess))
   }
 

@@ -22,7 +22,7 @@ import { fetchCreateOrder } from '../../../store/actions/orders'
 
 import { RootState } from '../../../store/reducers'
 import { ICalcRequest } from '../../../types/calcRequests'
-import { IService, IMainServiceRecord } from '../../../types'
+import { IService, IMainServiceRecord, IFormValues } from '../../../types'
 
 const Calc: React.FC = () => {
   const dispatch = useDispatch()
@@ -31,12 +31,22 @@ const Calc: React.FC = () => {
   const { calcRequests, isLoading: isCalcRequestsLoading } = useSelector((state: RootState) => state.calcRequests)
   const { main, additional, isLoading: isServicesLoading } = useSelector((state: RootState) => state.services)
 
+    const [isModalVisible, setModalVisible] = useState<boolean>(false)
+  const [isDrawerVisible, setDrawerVisible] = useState<boolean>(false)
+  const [request, setRequest] = useState<ICalcRequest | null>(null)
+  const [id, setId] = useState<string>('')
+
   const [form] = Form.useForm()
 
-  const [request, setRequest] = useState<ICalcRequest | null>(null)
-  const [isModalVisible, setModalVisible] = useState<boolean>(false)
-  const [isDrawerVisible, setDrawerVisible] = useState<boolean>(false)
-  const [id, setId] = useState<string>('')
+  useEffect(() => {
+    if(!token) {
+      return null
+    }
+    dispatch(fetchCalcRequests(token))
+    return () => {
+      dispatch(setCalcRequests([]))
+    }
+  }, [token])
 
   const onDrawerOpen = (record: ICalcRequest) => {
     const { _id, name, email, services } = record
@@ -52,26 +62,17 @@ const Calc: React.FC = () => {
 
   const onDrawerClose = () => setDrawerVisible(false)
 
-  useEffect(() => {
-    if(!token) {
-      return null
-    }
-    dispatch(fetchCalcRequests(token))
-    return () => {
-      dispatch(setCalcRequests([]))
-    }
-  }, [token])
-
   const onRemove = (id: string) => dispatch(fetchRemoveCalcRequest(id, token))
   const onProcess = (id: string) => dispatch(fetchProcessCalcRequest(id, token))
 
-  const onFormFinish = (values) => {
+  const onSuccess = () => {
+    dispatch(fetchProcessCalcRequest(id, token))
+    form.resetFields()
+    onDrawerClose()
+  }
+
+  const onFormFinish = (values: IFormValues) => {
     const data = getPostData(values, main, additional)
-    const onSuccess = () => {
-      dispatch(fetchProcessCalcRequest(id, token))
-      form.resetFields()
-      onDrawerClose()
-    }
     dispatch(fetchCreateOrder(data, token, onSuccess))
   }
 

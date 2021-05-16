@@ -5,6 +5,7 @@ import moment from 'moment'
 import AdminLayout from '../../layouts/AdminLayout'
 
 import OrderDrawer from '../../components/OrderDrawer'
+import Actions from '../../components/Actions'
 
 import Table from 'antd/lib/table'
 import Column from 'antd/lib/table/Column'
@@ -21,22 +22,8 @@ import getPostData from '../../utils/getPostData'
 import { fetchCreateOrder, fetchOrders, fetchRemoveOrder, fetchUpdateOrder, setOrders } from '../../store/actions/orders'
 
 import { RootState } from '../../store/reducers'
-import { IService, IMainServiceRecord } from '../../types'
+import { IService, IMainServiceRecord, IFormValues } from '../../types'
 import { IOrder } from '../../types/orders'
-import Actions from '../../components/Actions'
-
-interface IFormValues {
-  name: string
-  connection: string
-  address: string
-  date: {
-    _d: Date
-  }
-  comment?: string
-  main: string
-  value: number
-  additionals: { name: string[], value: number }[]
-}
 
 const Orders: React.FC = () => {
   const dispatch = useDispatch()

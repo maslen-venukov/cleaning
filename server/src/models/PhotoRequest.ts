@@ -4,6 +4,7 @@ export interface IPhotoRequest {
   _id?: string
   name: string
   email: string
+  date: Date
   isProcessed: boolean
   images: string[]
 }
@@ -11,7 +12,8 @@ export interface IPhotoRequest {
 const photoRequestSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
-  isPisProcessed: { type: Boolean, default: false },
+  date: { type: Date, default: Date.now },
+  isProcessed: { type: Boolean, default: false },
   images: { type: [String], required: true }
 })
 

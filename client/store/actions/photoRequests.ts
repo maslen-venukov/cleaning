@@ -61,3 +61,15 @@ export const fetchProcessPhotoRequest = (id: string, token: string) => (dispatch
     .then(({ data }) => dispatch(processPhotoRequest({ id, isProcessed: data.isProcessed })))
     .catch(e => message.error(e.response.data.message))
 }
+
+export const sendEmail = (id: string, price: number, comment: string, token: string, cb: () => void) => {
+  const data = { price, comment }
+  axios.post(`/api/requests/photo/email/${id}`, data, {
+    headers: { Authorization: token }
+  })
+    .then(({ data }) => {
+      message.success(data.message)
+      cb()
+    })
+    .catch(e => message.error(e.response.data.message))
+}

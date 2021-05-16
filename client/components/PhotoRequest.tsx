@@ -39,6 +39,7 @@ const PhotoRequest: React.FC = () => {
     images.forEach(image => formData.append('images', image))
 
     sendPhotoRequest(formData, () => ({}))
+    form.resetFields()
   }
 
   return (
