@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import fs, { unlink } from 'fs'
 
 import PhotoRequest, { IPhotoRequest } from '../models/PhotoRequest'
 
@@ -22,7 +23,7 @@ class requestController {
         return errorHandler(res, HTTPStatusCodes.BadRequest, 'Заполните все поля')
       }
 
-      const images = (req.files as Express.Multer.File[]).map(file => '/' + file.destination + file.filename)
+      const images = (req.files as Express.Multer.File[]).map(file => file.filename)
 
       const photoRequest = new PhotoRequest({
         name,
@@ -111,7 +112,7 @@ class requestController {
           <p>Здравствуйте, ${name}</p>
           <p>Стоимость оказания клининговых услуг составляет ${price} руб.</p>
           ${comment ? `<p>${comment}</p>` : ''}
-          ${images.reduce((acc, el) => acc += `<img src="${url}${el}" />`, '')}
+          ${images.reduce((acc, el) => acc += `<img src="${url}/uploads/${el}" />`, '')}
         `
       }, async err => {
         if(err) {
@@ -129,7 +130,35 @@ class requestController {
 
   async remove(req: Request, res: Response): Promise<Response> {
     try {
-      return removeService(req, res, PhotoRequest, 'Заявка', 'а')
+      const { id } = req.params
+
+      if(!isValidObjectId(id)) {
+        return errorHandler(res, HTTPStatusCodes.BadRequest, 'Некорректный id')
+      }
+
+      const photoRequest = await PhotoRequest.findById(id)
+
+      if(!photoRequest) {
+        return errorHandler(res, HTTPStatusCodes.NotFound, 'Заявка не найдена')
+      }
+
+      const { images } = photoRequest
+
+      try {
+        images.forEach(image => {
+          const path = process.env.UPLOADS_DIR + '/' + image
+          unlink(path, err => {
+            if(err) {
+              return errorHandler(res, HTTPStatusCodes.BadRequest, 'Не удалось удалить изображение')
+            }
+          })
+        })
+
+        await photoRequest.deleteOne()
+        return res.json({ message: 'Заявка успешно удалена' })
+      } catch (e) {
+        return errorHandler(res, HTTPStatusCodes.BadRequest, 'Ошибка при удалении')
+      }
     } catch (e) {
       console.log(e)
       return errorHandler(res)

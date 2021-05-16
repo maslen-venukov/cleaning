@@ -166,7 +166,7 @@ const Photo: React.FC = () => {
                 key={image}
                 width={188}
                 height={140}
-                src={API_URL + image}
+                src={`${API_URL}/uploads/${image}`}
                 className="photo-request-img"
               />
             ))}

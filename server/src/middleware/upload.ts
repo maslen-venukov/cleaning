@@ -6,7 +6,6 @@ const storage = diskStorage({
     cb(null, 'uploads/')
   },
   filename: (req, file, cb) => {
-    console.log(req)
     const ext = file.originalname.split('.').pop()
     cb(null, `${uuidv4()}.${ext}`)
   }
