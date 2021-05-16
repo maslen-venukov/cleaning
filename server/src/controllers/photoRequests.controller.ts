@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
-import fs, { unlink } from 'fs'
+import path from 'path'
+import fs from 'fs'
 
 import PhotoRequest, { IPhotoRequest } from '../models/PhotoRequest'
 
@@ -146,8 +147,8 @@ class requestController {
 
       try {
         images.forEach(image => {
-          const path = process.env.UPLOADS_DIR + '/' + image
-          unlink(path, err => {
+          const filePath = path.resolve(__dirname, '..', '..', 'uploads') + '\\' + image
+          fs.unlink(filePath, err => {
             if(err) {
               return errorHandler(res, HTTPStatusCodes.BadRequest, 'Не удалось удалить изображение')
             }

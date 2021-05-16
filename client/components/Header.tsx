@@ -39,7 +39,6 @@ interface IModalFormValues {
 const Header: React.FC = () => {
   const menu: IMenuItem[] = [
     { label: 'Главная', href: '/', key: 'home', icon: HomeOutlined },
-    { label: 'О нас', href: '/about', key: 'about', icon: InfoCircleOutlined },
     { label: 'Отзывы', href: '/reviews', key: 'reviews', icon: LikeOutlined }
   ]
 
@@ -53,7 +52,7 @@ const Header: React.FC = () => {
   const [form] = Form.useForm()
 
   useEffect(() => {
-    const page = router.pathname.slice(1)
+    const page = router.asPath.slice(1)
     setCurrent(page || 'home')
   }, [])
 
@@ -66,7 +65,6 @@ const Header: React.FC = () => {
 
   const onFormFinish = (values: IModalFormValues) => {
     const { name, phone } = values
-    console.log(values)
     sendBackCall(name, phone)
     form.resetFields()
     setModalVisible(false)
