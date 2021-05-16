@@ -68,7 +68,7 @@ class additionalServicesController {
       const { name, options }: IAdditionalService = req.body
 
       additionalService.name = name || additionalService.name
-      additionalService.options = options.length ? options : additionalService.options
+      additionalService.options = options?.length ? options : additionalService.options
 
       await additionalService.save()
       return res.json(additionalService)

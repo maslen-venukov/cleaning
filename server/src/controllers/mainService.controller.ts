@@ -73,7 +73,7 @@ class mainServiceController {
       mainService.name = name || mainService.name
       mainService.price = price || mainService.price
       mainService.units = units || mainService.units
-      mainService.includes = includes.length ? includes : mainService.includes
+      mainService.includes = includes?.length ? includes : mainService.includes
       mainService.info = info || mainService.info
 
       await mainService.save()
