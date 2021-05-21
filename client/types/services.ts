@@ -7,6 +7,7 @@ export interface IMainService {
   units: string
   includes: string[]
   info: string
+  image: string
 }
 
 export interface IAdditionalServiceOption {
@@ -44,15 +45,15 @@ export interface IServicesState {
 
 export interface IUpdateServicePayload {
   id: string
-  data: {
-    id?: string
-    name: string
-    price?: number
-    units?: string
-    info?: string
-    includes?: string[]
-    options?: IAdditionalServiceOption[]
-  }
+  data: FormData //{
+  //   id?: string
+  //   name: string
+  //   price?: number
+  //   units?: string
+  //   info?: string
+  //   includes?: string[]
+  //   options?: IAdditionalServiceOption[]
+  // }
 }
 
 interface ISetMainServices extends IAction {

@@ -11,7 +11,6 @@ import getServerUrl from '../utils/getServerUrl'
 
 import getAllService from '../services/getAll.service'
 import getByIdService from '../services/getById.service'
-import removeService from '../services/remove.service'
 
 import { HTTPStatusCodes } from '../types'
 

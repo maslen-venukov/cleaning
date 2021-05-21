@@ -66,7 +66,7 @@ export const fetchServices = () => (dispatch: Dispatch<ServicesAction>) => {
     .finally(() => dispatch(setLoading(false)))
 }
 
-export const fetchCreateMainService = (data: IMainService, token: string, cb: () => void) => (dispatch: Dispatch<ServicesAction>) => {
+export const fetchCreateMainService = (data: FormData, token: string, cb: () => void) => (dispatch: Dispatch<ServicesAction>) => {
   axios.post('/api/services/main', data, {
     headers: { Authorization: token }
   })

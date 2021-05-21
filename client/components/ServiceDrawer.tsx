@@ -5,9 +5,11 @@ import Input from 'antd/lib/input'
 import InputNumber from 'antd/lib/input-number'
 import Space from 'antd/lib/space'
 import Form, { FormProps } from 'antd/lib/form'
+import Upload from 'antd/lib/upload'
 import Button from 'antd/lib/button'
 import MinusCircleOutlined from '@ant-design/icons/lib/icons/MinusCircleOutlined'
 import PlusOutlined from '@ant-design/icons/lib/icons/PlusOutlined'
+import UploadOutlined from '@ant-design/icons/lib/icons/UploadOutlined'
 
 import { isAdditionalService, isMainService } from '../utils/checkServiceType'
 
@@ -94,6 +96,20 @@ const ServiceDrawer: React.FC<IServiceDrawerProps> = ({
                 </>
               )}
             </Form.List>
+
+            <Form.Item
+              label="Изображение"
+              name="image"
+              valuePropName="file"
+              rules={[{ required: true, message: 'Добавьте изображение!' }]}
+            >
+              <Upload
+                accept="image/*"
+                maxCount={1}
+              >
+                <Button icon={<UploadOutlined />}>Нажмите, чтобы загрузить</Button>
+              </Upload>
+            </Form.Item>
           </>
         )}
 

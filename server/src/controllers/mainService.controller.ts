@@ -15,8 +15,9 @@ class mainServiceController {
   async create(req: Request, res: Response): Promise<Response> {
     try {
       const { name, price, units, includes, info }: IMainService = req.body
+      const image = req.file?.filename
 
-      if(!name.trim() || !price || !units.trim() || !includes.length || !info.trim()) {
+      if(!name.trim() || !price || !units.trim() || !includes.length || !info.trim() || !image) {
         return errorHandler(res, HTTPStatusCodes.BadRequest, 'Заполните все поля')
       }
 
@@ -25,7 +26,8 @@ class mainServiceController {
         price,
         units,
         includes,
-        info
+        info,
+        image
       })
 
       await mainService.save()
@@ -57,6 +59,7 @@ class mainServiceController {
   async update(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params
+      const image = req.file?.filename
 
       if(!isValidObjectId(id)) {
         return errorHandler(res, HTTPStatusCodes.BadRequest, 'Некорректный id')
@@ -75,6 +78,7 @@ class mainServiceController {
       mainService.units = units || mainService.units
       mainService.includes = includes?.length ? includes : mainService.includes
       mainService.info = info || mainService.info
+      mainService.image = image || mainService.image
 
       await mainService.save()
       return res.json(mainService)

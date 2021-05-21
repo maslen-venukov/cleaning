@@ -11,6 +11,7 @@ import Column from 'antd/lib/table/Column'
 import Modal from 'antd/lib/modal'
 import Form from 'antd/lib/form'
 import Button from 'antd/lib/button/button'
+import Image from 'antd/lib/image'
 
 import { isMainService, isAdditionalService } from '../../utils/checkServiceType'
 import {
@@ -22,14 +23,17 @@ import {
   fetchUpdateMainService
 } from '../../store/actions/services'
 
+import { API_URL } from '../../types'
 import { RootState } from '../../store/reducers'
 import { IMainService, IAdditionalService, IAdditionalServiceOption, Service } from '../../types/services'
+import { UploadFile } from 'antd/lib/upload/interface'
 
 interface IFormValues {
   name: string
   price?: number
   units?: string
   info?: string
+  image?: { file: UploadFile, fileList: UploadFile[] }
   includes?: string[]
   options?: IAdditionalServiceOption[]
 }
@@ -78,9 +82,29 @@ const Services: React.FC = () => {
   }
 
   const onFormFinish = (values: IFormValues) => {
+    const formData = new FormData()
+    const keys = Object.keys(values)
+    const { image } = values
+
+    keys.forEach(key => {
+      const value = values[key]
+
+      if(typeof value === 'string') {
+        formData.append(key, value)
+      }
+
+      if(Array.isArray(value)) {
+        value.forEach(el => formData.append(key, el))
+      }
+    })
+
+    if(image?.file) {
+      formData.append('image', image.file.originFileObj)
+    }
+
     const payload = {
       id: currentService._id,
-      data: values
+      data: formData
     }
 
     if(isMainService(currentService)) {
@@ -96,11 +120,17 @@ const Services: React.FC = () => {
   const onRemoveAdditionalService = (id: string) => dispatch(fetchRemoveAdditionalService(id, token))
 
   const onCreate = (values: IFormValues) => {
-    const { name, price, units, info, includes, options } = values
+    const { name, price, units, info, includes, options, image } = values
 
     if(isMainService(currentService)) {
-      const data = { name, price, units, info, includes }
-      dispatch(fetchCreateMainService(data, token, onSuccess))
+      const formData = new FormData()
+      formData.append('name', name)
+      formData.append('price', price.toString())
+      formData.append('units', units)
+      formData.append('info', info)
+      includes.forEach(include => formData.append('includes', include))
+      formData.append('image', image.file.originFileObj)
+      dispatch(fetchCreateMainService(formData, token, onSuccess))
     }
 
     if(isAdditionalService(currentService)) {
@@ -115,7 +145,7 @@ const Services: React.FC = () => {
         title={() => 'Основные услуги'}
         footer={() => (
           <Button
-            onClick={() => onCreateDrawerOpen({ name: '', price: 0, units: '', includes: [], info: '' })}
+            onClick={() => onCreateDrawerOpen({ name: '', price: 0, units: '', includes: [], info: '', image: '' })}
             type="primary"
             >
               Добавить
@@ -150,9 +180,9 @@ const Services: React.FC = () => {
           <Button
             onClick={() => onCreateDrawerOpen({ name: '', options: [] })}
             type="primary"
-            >
-              Добавить
-            </Button>
+          >
+            Добавить
+          </Button>
         )}
         dataSource={additional}
         rowKey={(record: IAdditionalService) => record._id}
@@ -195,6 +225,8 @@ const Services: React.FC = () => {
               <ul>
                 {currentService.includes.map((value: string, index: number) => <li key={index}>{value}</li>)}
               </ul>
+              <p>Изображение:</p>
+              <Image src={`${API_URL}/uploads/${currentService.image}`} />
             </>
           )}
 

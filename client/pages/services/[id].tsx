@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import Image from 'next/image'
 import axios from 'axios'
 
 import MainLayout from '../../layouts/MainLayout'
@@ -11,9 +12,12 @@ import Typography from 'antd/lib/typography'
 import Alert from 'antd/lib/alert'
 import Result from 'antd/lib/result'
 import List from 'antd/lib/list'
+import Row from 'antd/lib/row'
+import Col from 'antd/lib/col'
 import message from 'antd/lib/message'
 import CheckCircleTwoTone from '@ant-design/icons/lib/icons/CheckCircleTwoTone'
 
+import { API_URL } from '../../types'
 import { IMainService } from '../../types/services'
 
 interface IServiceData {
@@ -40,8 +44,21 @@ const Service: React.FC<IServiceProps> = ({ data }) => {
         backgroundImage="../services.jpg"
       />
       <Container>
-        <Typography.Title level={3}>{data.service.name}</Typography.Title>
-        <Typography.Text>{data.service.info}</Typography.Text>
+        <Row gutter={15}>
+          <Col md={6}>
+            <Image
+              src={`${API_URL}/uploads/${data.service.image}`}
+              alt={data.service.name}
+              width={500}
+              height={500}
+              className="services-img"
+            />
+          </Col>
+          <Col md={18}>
+            <Typography.Title level={3}>{data.service.name}</Typography.Title>
+            <Typography.Text>{data.service.info}</Typography.Text>
+          </Col>
+        </Row>
         <Alert style={{ margin: '15px 0' }} message={`${data.service.price} руб. ${data.service.units}`} type="info" />
         <List
           dataSource={data.service.includes}

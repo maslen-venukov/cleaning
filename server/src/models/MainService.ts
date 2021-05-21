@@ -7,6 +7,7 @@ export interface IMainService {
   units: string
   includes: string[]
   info: string
+  image: string
 }
 
 const mainServiceSchema = new Schema({
@@ -14,7 +15,8 @@ const mainServiceSchema = new Schema({
   price: { type: Number, required: true, min: 0 },
   units: { type: String, required: true },
   includes: { type: [String], required: true },
-  info: { type: String, required: true }
+  info: { type: String, required: true },
+  image: { type: String, required: true }
 })
 
 export default model<IMainService & Document>('Main_Services', mainServiceSchema)

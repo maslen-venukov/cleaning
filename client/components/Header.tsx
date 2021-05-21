@@ -16,7 +16,6 @@ import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import Spin from 'antd/lib/spin'
 import HomeOutlined from '@ant-design/icons/HomeOutlined'
-import InfoCircleOutlined from '@ant-design/icons/InfoCircleOutlined'
 import DollarOutlined from '@ant-design/icons/DollarOutlined'
 import LikeOutlined from '@ant-design/icons/LikeOutlined'
 import PhoneOutlined from '@ant-design/icons/PhoneOutlined'
@@ -54,7 +53,7 @@ const Header: React.FC = () => {
   useEffect(() => {
     const page = router.asPath.slice(1)
     setCurrent(page || 'home')
-  }, [])
+  }, [router])
 
   const onMenuClick = (e: MenuInfo) => {
     if(e.key !== 'back-call') {
