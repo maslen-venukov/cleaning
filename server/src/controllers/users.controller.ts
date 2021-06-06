@@ -10,6 +10,8 @@ import { HTTPStatusCodes } from '../types'
 
 const SECRET_KEY = process.env.SECRET_KEY
 
+const maxAge = 1000 * 3600 * 24
+
 class UsersController {
   async register(req: Request, res: Response): Promise<Response> {
     try {
@@ -46,11 +48,17 @@ class UsersController {
       const token = `Bearer ${jwt.sign({ _id, login }, SECRET_KEY, { expiresIn: '24h' })}`
 
       await user.save()
-      return res.status(HTTPStatusCodes.Created).json({
-        token,
-        user: { _id, login },
-        message: 'Пользователь успешно зарегистрирован'
-      })
+      return res
+        .status(HTTPStatusCodes.Created)
+        .cookie('token', token, {
+          httpOnly: true,
+          maxAge
+        })
+        .json({
+          token,
+          user: { _id, login },
+          message: 'Пользователь успешно зарегистрирован'
+        })
     } catch (e) {
       console.log(e)
       return errorHandler(res)
@@ -78,10 +86,15 @@ class UsersController {
 
       const token = `Bearer ${jwt.sign({ _id, login }, SECRET_KEY, { expiresIn: '24h' })}`
 
-      return res.json({
-        token,
-        currentUser: { _id, login }
-      })
+      return res
+        .cookie('token', token, {
+          httpOnly: true,
+          maxAge
+        })
+        .json({
+          token,
+          currentUser: { _id, login }
+        })
     } catch (e) {
       console.log(e)
       return errorHandler(res)
@@ -95,13 +108,18 @@ class UsersController {
 
       const token = `Bearer ${jwt.sign({ _id: user._id, login }, SECRET_KEY, { expiresIn: '24h' })}`
 
-      return res.json({
-        token,
-        currentUser: {
-          _id: user._id,
-          login
-        }
-      })
+      return res
+        .cookie('token', token, {
+          httpOnly: true,
+          maxAge
+        })
+        .json({
+          token,
+          currentUser: {
+            _id: user._id,
+            login
+          }
+        })
     } catch (e) {
       console.log(e)
       return errorHandler(res)

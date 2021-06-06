@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -20,7 +21,11 @@ const MONGO_URI = process.env.MONGO_URI
 
 const app = express()
 
-app.use(cors())
+app.use(cors({
+  origin: ['http://localhost:3000'],
+  credentials: true
+}))
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/uploads', express.static('uploads'))
