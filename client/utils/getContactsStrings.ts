@@ -1,6 +1,6 @@
 import { IOrderDrawerConfig } from "../components/OrderDrawer"
 
-const getContactStrings = (config: IOrderDrawerConfig) => {
+const getContactStrings = (config: IOrderDrawerConfig): { label: string, name: string } => {
   const { phone, email } = config
   switch(true) {
     case phone:

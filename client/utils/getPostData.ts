@@ -13,7 +13,7 @@ interface IFormValues {
   additionals: { name: string[], value: number }[]
 }
 
-const getPostData = (values: IFormValues, main: IMainService[], additional: IAdditionalService[]): any => {
+const getPostData = (values: IFormValues, main: IMainService[], additional: IAdditionalService[]) => {
   const { main: mainId, additionals, value, date, phone, email, connection } = values
 
   const { name: mainServiceName, price, units } = main.find(service => service._id === mainId)

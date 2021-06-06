@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "jest"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
@@ -23,10 +24,16 @@
     "sass": "^1.32.11"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "@babel/preset-typescript": "^7.13.0",
+    "@types/jest": "^26.0.23",
     "@types/node": "^15.0.1",
     "@types/react": "^17.0.5",
     "@types/react-redux": "^7.1.16",
     "@types/redux": "^3.6.0",
+    "babel-jest": "^27.0.2",
+    "jest": "^27.0.4",
     "typescript": "^4.2.4"
   }
 }

@@ -1,7 +1,7 @@
 import { IOrder } from '../types/orders'
 import { ICalcRequest } from '../types/calcRequests'
 
-const getTotalPrice = (order: IOrder | ICalcRequest) => {
+const getTotalPrice = (order: IOrder | ICalcRequest): number => {
   if(!order) {
     return null
   }
