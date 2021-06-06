@@ -24,7 +24,6 @@ import { IFormValues } from '../../types'
 const BackCalls: React.FC = () => {
   const dispatch = useDispatch()
 
-  const { token } = useSelector((state: RootState) => state.user)
   const { backCalls, isLoading: isBackCallsLoading } = useSelector((state: RootState) => state.backCalls)
   const { main, additional, isLoading: isServicesLoading } = useSelector((state: RootState) => state.services)
 
@@ -43,27 +42,24 @@ const BackCalls: React.FC = () => {
   const onDrawerClose = () => setDrawerVisible(false)
 
   useEffect(() => {
-    if(!token) {
-      return null
-    }
-    dispatch(fetchBackCalls(token))
+    dispatch(fetchBackCalls())
     return () => {
       dispatch(setBackCalls([]))
     }
-  }, [token])
+  }, [])
 
-  const onRemove = (id: string) => dispatch(fetchRemoveBackCall(id, token))
-  const onProcess = (id: string) => dispatch(fetchProcessBackCall(id, token))
+  const onRemove = (id: string) => dispatch(fetchRemoveBackCall(id))
+  const onProcess = (id: string) => dispatch(fetchProcessBackCall(id))
 
   const onSuccess = () => {
-    dispatch(fetchProcessBackCall(id, token))
+    dispatch(fetchProcessBackCall(id))
     form.resetFields()
     onDrawerClose()
   }
 
   const onFormFinish = (values: IFormValues) => {
     const data = getPostData(values, main, additional)
-    dispatch(fetchCreateOrder(data, token, onSuccess))
+    dispatch(fetchCreateOrder(data, onSuccess))
   }
 
   return (

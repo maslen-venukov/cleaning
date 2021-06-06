@@ -30,14 +30,12 @@ export const logIn = (login: string, password: string, cb: () => void) => (dispa
     .catch(e => message.error(e.response.data.message))
 }
 
-export const auth = (token: string) => (dispatch: Dispatch<UserAction>) => {
-  axios.get('/api/users/auth', {
-    headers: { Authorization: token }
-  })
+export const auth = () => (dispatch: Dispatch<UserAction>) => {
+  axios.get('/api/users/auth')
     .then(({ data }) => dispatch(setUser(data)))
     .catch(e => {
       console.log(e.response.data.message)
-      localStorage.removeItem('token')
+      dispatch(logOut())
     })
     .finally(() => dispatch(setReady()))
 }

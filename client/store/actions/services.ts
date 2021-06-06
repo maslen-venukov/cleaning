@@ -66,10 +66,8 @@ export const fetchServices = () => (dispatch: Dispatch<ServicesAction>) => {
     .finally(() => dispatch(setLoading(false)))
 }
 
-export const fetchCreateMainService = (data: FormData, token: string, cb: () => void) => (dispatch: Dispatch<ServicesAction>) => {
-  axios.post('/api/services/main', data, {
-    headers: { Authorization: token }
-  })
+export const fetchCreateMainService = (data: FormData, cb: () => void) => (dispatch: Dispatch<ServicesAction>) => {
+  axios.post('/api/services/main', data)
     .then(({ data }) => {
       dispatch(createMainService(data))
       message.success('Услуга успешно создана')
@@ -78,10 +76,8 @@ export const fetchCreateMainService = (data: FormData, token: string, cb: () => 
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchCreateAdditionalService = (data: IAdditionalService, token: string, cb: () => void) => (dispatch: Dispatch<ServicesAction>) => {
-  axios.post('/api/services/additional', data, {
-    headers: { Authorization: token }
-  })
+export const fetchCreateAdditionalService = (data: IAdditionalService, cb: () => void) => (dispatch: Dispatch<ServicesAction>) => {
+  axios.post('/api/services/additional', data)
     .then(({ data }) => {
       dispatch(createAdditionalService(data))
       message.success('Услуга успешно создана')
@@ -90,10 +86,8 @@ export const fetchCreateAdditionalService = (data: IAdditionalService, token: st
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchRemoveMainService = (id: string, token: string) => (dispatch: Dispatch<ServicesAction>) => {
-  axios.delete(`/api/services/main/${id}`, {
-    headers: { Authorization: token }
-  })
+export const fetchRemoveMainService = (id: string) => (dispatch: Dispatch<ServicesAction>) => {
+  axios.delete(`/api/services/main/${id}`)
     .then(({ data }) => {
       dispatch(removeMainService(id))
       message.success(data.message)
@@ -101,10 +95,8 @@ export const fetchRemoveMainService = (id: string, token: string) => (dispatch: 
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchRemoveAdditionalService = (id: string, token: string) => (dispatch: Dispatch<ServicesAction>) => {
-  axios.delete(`/api/services/additional/${id}`, {
-    headers: { Authorization: token }
-  })
+export const fetchRemoveAdditionalService = (id: string) => (dispatch: Dispatch<ServicesAction>) => {
+  axios.delete(`/api/services/additional/${id}`)
     .then(({ data }) => {
       dispatch(removeAdditionalService(id))
       message.success(data.message)
@@ -112,11 +104,9 @@ export const fetchRemoveAdditionalService = (id: string, token: string) => (disp
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchUpdateMainService = (payload: IUpdateServicePayload, token: string, cb: () => void) => (dispatch: Dispatch<ServicesAction>) => {
+export const fetchUpdateMainService = (payload: IUpdateServicePayload, cb: () => void) => (dispatch: Dispatch<ServicesAction>) => {
   const { id, data } = payload
-  axios.put(`/api/services/main/${id}`, data, {
-    headers: { Authorization: token }
-  })
+  axios.put(`/api/services/main/${id}`, data)
     .then(({ data }) => {
       dispatch(updateMainService({ id: data._id, data }))
       message.success('Услуга успешно изменена')
@@ -125,11 +115,9 @@ export const fetchUpdateMainService = (payload: IUpdateServicePayload, token: st
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchUpdateAdditionalService = (payload: IUpdateServicePayload, token: string, cb: () => void) => (dispatch: Dispatch<ServicesAction>) => {
+export const fetchUpdateAdditionalService = (payload: IUpdateServicePayload, cb: () => void) => (dispatch: Dispatch<ServicesAction>) => {
   const { id, data } = payload
-  axios.put(`/api/services/additional/${id}`, data, {
-    headers: { Authorization: token }
-  })
+  axios.put(`/api/services/additional/${id}`, data)
     .then(({ data }) => {
       dispatch(updateAdditionalService({ id: data._id, data }))
       message.success('Услуга успешно изменена')

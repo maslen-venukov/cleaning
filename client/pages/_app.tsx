@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import cookie from 'cookie'
 
 import ConfigProvider from 'antd/lib/config-provider'
 import locale from 'antd/lib/locale/ru_RU'
@@ -18,6 +19,7 @@ import { RootState } from '../store/reducers'
 import '../styles/index.sass'
 
 axios.defaults.baseURL = API_URL
+axios.defaults.withCredentials = true
 
 const WrappedApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   const dispatch = useDispatch()
@@ -26,14 +28,7 @@ const WrappedApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   const { currentUser, isReady } = useSelector((state: RootState) => state.user)
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-
-    if(token) {
-      dispatch(auth(token))
-    } else {
-      dispatch(setReady())
-    }
-
+    dispatch(auth())
     dispatch(fetchServices())
   }, [])
 

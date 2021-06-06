@@ -24,11 +24,9 @@ const processPhotoRequest = (payload: IProcessPhotoRequestPayload): PhotoRequest
   payload
 })
 
-export const fetchPhotoRequests = (token: string) => (dispatch: Dispatch<PhotoRequestsAction>) => {
+export const fetchPhotoRequests = () => (dispatch: Dispatch<PhotoRequestsAction>) => {
   dispatch(setLoading(true))
-  axios.get('/api/requests/photo', {
-    headers: { Authorization: token }
-  })
+  axios.get('/api/requests/photo')
     .then(({ data }) => dispatch(setPhotoRequests(data)))
     .catch(e => message.error(e.response.data.message))
     .finally(() => dispatch(setLoading(false)))
@@ -43,10 +41,8 @@ export const sendPhotoRequest = (data: FormData, cb: () => void) => {
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchRemovePhotoRequest = (id: string, token: string) => (dispatch: Dispatch<PhotoRequestsAction>) => {
-  axios.delete(`/api/requests/photo/${id}`, {
-    headers: { Authorization: token }
-  })
+export const fetchRemovePhotoRequest = (id: string) => (dispatch: Dispatch<PhotoRequestsAction>) => {
+  axios.delete(`/api/requests/photo/${id}`)
     .then(({ data }) => {
       dispatch(removePhotoRequest(id))
       message.success(data.message)
@@ -54,19 +50,15 @@ export const fetchRemovePhotoRequest = (id: string, token: string) => (dispatch:
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchProcessPhotoRequest = (id: string, token: string) => (dispatch: Dispatch<PhotoRequestsAction>) => {
-  axios.put(`/api/requests/photo/process/${id}`, {}, {
-    headers: { Authorization: token }
-  })
+export const fetchProcessPhotoRequest = (id: string) => (dispatch: Dispatch<PhotoRequestsAction>) => {
+  axios.put(`/api/requests/photo/process/${id}`)
     .then(({ data }) => dispatch(processPhotoRequest({ id, isProcessed: data.isProcessed })))
     .catch(e => message.error(e.response.data.message))
 }
 
-export const sendEmail = (id: string, price: number, comment: string, token: string, cb: () => void) => {
+export const sendEmail = (id: string, price: number, comment: string, cb: () => void) => {
   const data = { price, comment }
-  axios.post(`/api/requests/photo/email/${id}`, data, {
-    headers: { Authorization: token }
-  })
+  axios.post(`/api/requests/photo/email/${id}`, data)
     .then(({ data }) => {
       message.success(data.message)
       cb()

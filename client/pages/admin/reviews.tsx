@@ -29,7 +29,6 @@ interface IFormData {
 const Reviews: React.FC = () => {
   const dispatch = useDispatch()
 
-  const { token } = useSelector((state: RootState) => state.user)
   const { reviews, isLoading } = useSelector((state: RootState) => state.reviews)
 
   const [form] = Form.useForm()
@@ -47,20 +46,17 @@ const Reviews: React.FC = () => {
   const onDrawerClose = () => setDrawerVisible(false)
 
   useEffect(() => {
-    if(!token) {
-      return null
-    }
-    dispatch(fetchAllReviews(token))
+    dispatch(fetchAllReviews())
     return () => {
       dispatch(setReviews([]))
     }
-  }, [token])
+  }, [])
 
-  const onRemove = (id: string) => dispatch(fetchRemoveReview(id, token))
+  const onRemove = (id: string) => dispatch(fetchRemoveReview(id))
 
   const onProcess = (id: string, value: boolean) => {
     const payload = { id, data: { isProcessed: !value } }
-    dispatch(fetchUpdateReview(payload, token))
+    dispatch(fetchUpdateReview(payload))
   }
 
   const onSuccess = () => {
@@ -71,7 +67,7 @@ const Reviews: React.FC = () => {
 
   const onFormFinish = (values: IFormData) => {
     const payload = { id, data: { ...values, isProcessed: true } }
-    dispatch(fetchUpdateReview(payload, token, onSuccess))
+    dispatch(fetchUpdateReview(payload, onSuccess))
   }
 
   return (

@@ -29,7 +29,7 @@ export interface IOrdersState {
 
 export interface IUpdateOrderPayload {
   id: string,
-  data: IOrder
+  data: any
 }
 
 interface ISetOrders extends IAction {

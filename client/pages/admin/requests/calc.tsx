@@ -27,7 +27,6 @@ import { IService, IMainServiceRecord, IFormValues } from '../../../types'
 const Calc: React.FC = () => {
   const dispatch = useDispatch()
 
-  const { token } = useSelector((state: RootState) => state.user)
   const { calcRequests, isLoading: isCalcRequestsLoading } = useSelector((state: RootState) => state.calcRequests)
   const { main, additional, isLoading: isServicesLoading } = useSelector((state: RootState) => state.services)
 
@@ -39,14 +38,11 @@ const Calc: React.FC = () => {
   const [form] = Form.useForm()
 
   useEffect(() => {
-    if(!token) {
-      return null
-    }
-    dispatch(fetchCalcRequests(token))
+    dispatch(fetchCalcRequests())
     return () => {
       dispatch(setCalcRequests([]))
     }
-  }, [token])
+  }, [])
 
   const onDrawerOpen = (record: ICalcRequest) => {
     const { _id, name, email, services } = record
@@ -62,18 +58,18 @@ const Calc: React.FC = () => {
 
   const onDrawerClose = () => setDrawerVisible(false)
 
-  const onRemove = (id: string) => dispatch(fetchRemoveCalcRequest(id, token))
-  const onProcess = (id: string) => dispatch(fetchProcessCalcRequest(id, token))
+  const onRemove = (id: string) => dispatch(fetchRemoveCalcRequest(id))
+  const onProcess = (id: string) => dispatch(fetchProcessCalcRequest(id))
 
   const onSuccess = () => {
-    dispatch(fetchProcessCalcRequest(id, token))
+    dispatch(fetchProcessCalcRequest(id))
     form.resetFields()
     onDrawerClose()
   }
 
   const onFormFinish = (values: IFormValues) => {
     const data = getPostData(values, main, additional)
-    dispatch(fetchCreateOrder(data, token, onSuccess))
+    dispatch(fetchCreateOrder(data, onSuccess))
   }
 
   const onOpenModal = (record: ICalcRequest) => {

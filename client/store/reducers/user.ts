@@ -11,7 +11,6 @@ const user = (state = initialState, action: UserAction): IUserState => {
 
   switch(type) {
     case UserActionTypes.SET_USER:
-      localStorage.setItem('token', payload.token)
       const { token, currentUser } = payload
       return {
         ...state,
@@ -26,7 +25,7 @@ const user = (state = initialState, action: UserAction): IUserState => {
       }
 
     case UserActionTypes.LOG_OUT:
-      localStorage.removeItem('token')
+      document.cookie = `token=;expires=${new Date(0)}`
       return {
         ...state,
         token: null,

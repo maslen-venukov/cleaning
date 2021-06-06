@@ -41,7 +41,6 @@ interface IFormValues {
 const Services: React.FC = () => {
   const dispatch = useDispatch()
 
-  const token = useSelector((state: RootState) => state.user.token)
   const { main, additional, isLoading } = useSelector((state: RootState) => state.services)
 
   const [form] = Form.useForm()
@@ -108,16 +107,16 @@ const Services: React.FC = () => {
     }
 
     if(isMainService(currentService)) {
-      dispatch(fetchUpdateMainService(payload, token, onSuccess))
+      dispatch(fetchUpdateMainService(payload, onSuccess))
     }
 
     if(isAdditionalService(currentService)) {
-      dispatch(fetchUpdateAdditionalService(payload, token, onSuccess))
+      dispatch(fetchUpdateAdditionalService(payload, onSuccess))
     }
   }
 
-  const onRemoveMainService = (id: string) => dispatch(fetchRemoveMainService(id, token))
-  const onRemoveAdditionalService = (id: string) => dispatch(fetchRemoveAdditionalService(id, token))
+  const onRemoveMainService = (id: string) => dispatch(fetchRemoveMainService(id))
+  const onRemoveAdditionalService = (id: string) => dispatch(fetchRemoveAdditionalService(id))
 
   const onCreate = (values: IFormValues) => {
     const { name, price, units, info, includes, options, image } = values
@@ -130,12 +129,12 @@ const Services: React.FC = () => {
       formData.append('info', info)
       includes.forEach(include => formData.append('includes', include))
       formData.append('image', image.file.originFileObj)
-      dispatch(fetchCreateMainService(formData, token, onSuccess))
+      dispatch(fetchCreateMainService(formData, onSuccess))
     }
 
     if(isAdditionalService(currentService)) {
       const data = { name, options }
-      dispatch(fetchCreateAdditionalService(data, token, onSuccess))
+      dispatch(fetchCreateAdditionalService(data, onSuccess))
     }
   }
 

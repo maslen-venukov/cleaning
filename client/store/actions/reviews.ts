@@ -32,21 +32,17 @@ export const fetchReviews = () => (dispatch: Dispatch<ReviewsAction>) => {
     .finally(() => dispatch(setLoading(false)))
 }
 
-export const fetchAllReviews = (token: string) => (dispatch: Dispatch<ReviewsAction>) => {
+export const fetchAllReviews = () => (dispatch: Dispatch<ReviewsAction>) => {
   dispatch(setLoading(true))
-  axios.get('/api/reviews', {
-    headers: { Authorization: token }
-  })
+  axios.get('/api/reviews')
     .then(({ data }) => dispatch(setReviews(data)))
     .catch(e => message.error(e.response.data.message))
     .finally(() => dispatch(setLoading(false)))
 }
 
-export const fetchUpdateReview = (payload: IUpdateReviewPayload, token: string, cb?: () => void) => (dispatch: Dispatch<ReviewsAction>) => {
+export const fetchUpdateReview = (payload: IUpdateReviewPayload, cb?: () => void) => (dispatch: Dispatch<ReviewsAction>) => {
   const { id, data } = payload
-  axios.put(`/api/reviews/${id}`, data, {
-    headers: { Authorization: token}
-  })
+  axios.put(`/api/reviews/${id}`, data)
     .then(({ data }) => {
       dispatch(updateReview({ id: data._id, data }))
       if(cb) {
@@ -56,10 +52,8 @@ export const fetchUpdateReview = (payload: IUpdateReviewPayload, token: string, 
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchRemoveReview = (id: string, token: string) => (dispatch: Dispatch<ReviewsAction>) => {
-  axios.delete(`/api/reviews/${id}`, {
-    headers: { Authorization: token}
-  })
+export const fetchRemoveReview = (id: string) => (dispatch: Dispatch<ReviewsAction>) => {
+  axios.delete(`/api/reviews/${id}`)
     .then(({ data }) => {
       dispatch(removeReview(id))
       message.success(data.message)

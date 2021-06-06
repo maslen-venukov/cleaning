@@ -24,11 +24,9 @@ const processCalcRequest = (payload: IProcessCalcRequestPayload): CalcRequestsAc
   payload
 })
 
-export const fetchCalcRequests = (token: string) => (dispatch: Dispatch<CalcRequestsAction>) => {
+export const fetchCalcRequests = () => (dispatch: Dispatch<CalcRequestsAction>) => {
   dispatch(setLoading(true))
-  axios.get('/api/requests/calc', {
-    headers: { Authorization: token }
-  })
+  axios.get('/api/requests/calc')
     .then(({ data }) => dispatch(setCalcRequests(data)))
     .catch(e => message.error(e.response.data.message))
     .finally(() => dispatch(setLoading(false)))
@@ -43,10 +41,8 @@ export const sendCalcRequest = (data: ICalcRequest, cb: () => void) => {
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchRemoveCalcRequest = (id: string, token: string) => (dispatch: Dispatch<CalcRequestsAction>) => {
-  axios.delete(`/api/requests/calc/${id}`, {
-    headers: { Authorization: token }
-  })
+export const fetchRemoveCalcRequest = (id: string) => (dispatch: Dispatch<CalcRequestsAction>) => {
+  axios.delete(`/api/requests/calc/${id}`)
     .then(({ data }) => {
       dispatch(removeCalcRequest(id))
       message.success(data.message)
@@ -54,10 +50,8 @@ export const fetchRemoveCalcRequest = (id: string, token: string) => (dispatch: 
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchProcessCalcRequest = (id: string, token: string) => (dispatch: Dispatch<CalcRequestsAction>) => {
-  axios.put(`/api/requests/calc/process/${id}`, {}, {
-    headers: { Authorization: token }
-  })
+export const fetchProcessCalcRequest = (id: string) => (dispatch: Dispatch<CalcRequestsAction>) => {
+  axios.put(`/api/requests/calc/process/${id}`)
     .then(({ data }) => dispatch(processCalcRequest({ id, isProcessed: data.isProcessed })))
     .catch(e => message.error(e.response.data.message))
 }

@@ -29,20 +29,16 @@ const updateOrder = (payload: IUpdateOrderPayload): OrdersAction => ({
   payload
 })
 
-export const fetchOrders = (token: string) => (dispatch: Dispatch<OrdersAction>) => {
+export const fetchOrders = () => (dispatch: Dispatch<OrdersAction>) => {
   dispatch(setLoading(true))
-  axios.get('/api/orders', {
-    headers: { Authorization: token }
-  })
+  axios.get('/api/orders')
     .then(({ data }) => dispatch(setOrders(data)))
     .catch(e => message.error(e.response.data.message))
     .finally(() => dispatch(setLoading(false)))
 }
 
-export const fetchCreateOrder = (data: IOrder, token: string, cb: () => void) => (dispatch: Dispatch<OrdersAction>) => {
-  axios.post('/api/orders', data, {
-    headers: { Authorization: token }
-  })
+export const fetchCreateOrder = (data: any, cb: () => void) => (dispatch: Dispatch<OrdersAction>) => {
+  axios.post('/api/orders', data)
     .then(({ data }) => {
       dispatch(createOrder(data))
       message.success('Заказ успешно создан')
@@ -51,10 +47,8 @@ export const fetchCreateOrder = (data: IOrder, token: string, cb: () => void) =>
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchRemoveOrder = (id: string, token: string) => (dispatch: Dispatch<OrdersAction>) => {
-  axios.delete(`/api/orders/${id}`, {
-    headers: { Authorization: token }
-  })
+export const fetchRemoveOrder = (id: string) => (dispatch: Dispatch<OrdersAction>) => {
+  axios.delete(`/api/orders/${id}`)
     .then(({ data }) => {
       dispatch(removeOrder(id))
       message.success(data.message)
@@ -62,11 +56,9 @@ export const fetchRemoveOrder = (id: string, token: string) => (dispatch: Dispat
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchUpdateOrder = (payload: IUpdateOrderPayload, token: string, cb?: () => void) => (dispatch: Dispatch<OrdersAction>) => {
+export const fetchUpdateOrder = (payload: IUpdateOrderPayload, cb?: () => void) => (dispatch: Dispatch<OrdersAction>) => {
   const { id, data } = payload
-  axios.put(`/api/orders/${id}`, data, {
-    headers: { Authorization: token}
-  })
+  axios.put(`/api/orders/${id}`, data)
     .then(({ data }) => {
       dispatch(updateOrder({ id: data._id, data }))
       if(cb) {

@@ -24,11 +24,9 @@ const processBackCall = (payload: IProcessBackCallPayload): BackCallsAction => (
   payload
 })
 
-export const fetchBackCalls = (token: string) => (dispatch: Dispatch<BackCallsAction>) => {
+export const fetchBackCalls = () => (dispatch: Dispatch<BackCallsAction>) => {
   dispatch(setLoading(true))
-  axios.get('/api/back-calls', {
-    headers: { Authorization: token }
-  })
+  axios.get('/api/back-calls')
     .then(({ data }) => dispatch(setBackCalls(data)))
     .catch(e => message.error(e.response.data.message))
     .finally(() => dispatch(setLoading(false)))
@@ -40,10 +38,8 @@ export const sendBackCall = (name: string, phone: string) => {
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchRemoveBackCall = (id: string, token: string) => (dispatch: Dispatch<BackCallsAction>) => {
-  axios.delete(`/api/back-calls/${id}`, {
-    headers: { Authorization: token }
-  })
+export const fetchRemoveBackCall = (id: string) => (dispatch: Dispatch<BackCallsAction>) => {
+  axios.delete(`/api/back-calls/${id}`)
     .then(({ data }) => {
       dispatch(removeBackCall(id))
       message.success(data.message)
@@ -51,10 +47,8 @@ export const fetchRemoveBackCall = (id: string, token: string) => (dispatch: Dis
     .catch(e => message.error(e.response.data.message))
 }
 
-export const fetchProcessBackCall = (id: string, token: string) => (dispatch: Dispatch<BackCallsAction>) => {
-  axios.put(`/api/back-calls/process/${id}`, {}, {
-    headers: { Authorization: token }
-  })
+export const fetchProcessBackCall = (id: string) => (dispatch: Dispatch<BackCallsAction>) => {
+  axios.put(`/api/back-calls/process/${id}`)
     .then(({ data }) => dispatch(processBackCall({ id, isProcessed: data.isProcessed })))
     .catch(e => message.error(e.response.data.message))
 }

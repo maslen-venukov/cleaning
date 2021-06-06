@@ -29,7 +29,6 @@ import { IOrder } from '../../types/orders'
 const Orders: React.FC = () => {
   const dispatch = useDispatch()
 
-  const { token } = useSelector((state: RootState) => state.user)
   const { orders, isLoading } = useSelector((state: RootState) => state.orders)
   const { main, additional, isLoading: isServicesLoading } = useSelector((state: RootState) => state.services)
 
@@ -41,21 +40,18 @@ const Orders: React.FC = () => {
   const [isCreateDrawerVisible, setCreateDrawerVisible] = useState<boolean>(false)
 
   useEffect(() => {
-    if(!token) {
-      return null
-    }
-    dispatch(fetchOrders(token))
+    dispatch(fetchOrders())
     return () => {
       dispatch(setOrders([]))
     }
-  }, [token])
+  }, [])
 
-  const onRemove = (id: string) => dispatch(fetchRemoveOrder(id, token))
+  const onRemove = (id: string) => dispatch(fetchRemoveOrder(id))
 
   const onComplete = (id: string) => {
     const order = orders.find(order => order._id === id)
     const payload = { id, data: { ...order, isCompleted: !order.isCompleted } }
-    dispatch(fetchUpdateOrder(payload, token))
+    dispatch(fetchUpdateOrder(payload))
   }
 
   const onOpenModal = (record: IOrder) => {
@@ -90,12 +86,12 @@ const Orders: React.FC = () => {
   const onFormFinish = (values: IFormValues) => {
     const data = getPostData(values, main, additional)
     console.log(data)
-    dispatch(fetchUpdateOrder({ id: order._id, data }, token, onSuccess))
+    dispatch(fetchUpdateOrder({ id: order._id, data }, onSuccess))
   }
 
   const onCreate = (values: IFormValues) => {
     const data = getPostData(values, main, additional)
-    dispatch(fetchCreateOrder(data, token, onSuccess))
+    dispatch(fetchCreateOrder(data, onSuccess))
   }
 
   return (
