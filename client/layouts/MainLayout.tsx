@@ -17,7 +17,7 @@ const MainLayout: React.FC<IMainLayoutProps> = ({ children, title, description, 
   return (
     <>
       <Head>
-        <title>Клининговая компания{title ? ` — ${title}` : ''}</title>
+        <title>ООО "Энерго-Сервис" — клининговая компания{title ? ` — ${title}` : ''}</title>
         <meta name="description" content={description || 'Клининговая компания'} />
         <meta name="robots" content="index, follow" />
         <meta name="keywords" content={`клининг, уборка${keywords ? `, ${keywords}` : ''}`} />

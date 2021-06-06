@@ -108,6 +108,21 @@ const Header: React.FC = () => {
         </Menu.Item>
       </Menu>
 
+      <div className="header__contacts">
+        <p className="header__address">
+          ул. Аксакова, 3
+          <HomeOutlined />
+        </p>
+        <p className="header__phone">
+          <Link href="tel:83532310155">
+            <span>
+              8 (3532) 31-01-55
+              <PhoneOutlined />
+            </span>
+          </Link>
+        </p>
+      </div>
+
       <Modal
         title="Обратный звонок"
         visible={isModalVisible}
