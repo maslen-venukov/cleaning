@@ -22,7 +22,7 @@ const MONGO_URI = process.env.MONGO_URI
 const app = express()
 
 app.use(cors({
-  origin: ['http://localhost:3000'],
+  origin: ['http://localhost:3000', 'https://energo-servis-cleaning.vercel.app'],
   credentials: true
 }))
 app.use(cookieParser())

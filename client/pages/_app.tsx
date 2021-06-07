@@ -3,14 +3,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import axios from 'axios'
-import cookie from 'cookie'
 
 import ConfigProvider from 'antd/lib/config-provider'
 import locale from 'antd/lib/locale/ru_RU'
 
 import { wrapper } from '../store'
 
-import { auth, setReady } from '../store/actions/user'
+import { auth } from '../store/actions/user'
 import { fetchServices } from '../store/actions/services'
 
 import { API_URL } from '../types'

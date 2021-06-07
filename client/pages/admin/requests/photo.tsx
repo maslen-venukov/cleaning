@@ -31,7 +31,6 @@ interface IFormValues {
 const Photo: React.FC = () => {
   const dispatch = useDispatch()
 
-  const { token } = useSelector((state: RootState) => state.user)
   const { photoRequests, isLoading: isPhotoRequestsLoading } = useSelector((state: RootState) => state.photoRequests)
 
   const [isModalVisible, setModalVisible] = useState<boolean>(false)
@@ -42,17 +41,14 @@ const Photo: React.FC = () => {
   const [form] = Form.useForm()
 
   useEffect(() => {
-    if(!token) {
-      return null
-    }
-    dispatch(fetchPhotoRequests(token))
+    dispatch(fetchPhotoRequests())
     return () => {
       dispatch(setPhotoRequests([]))
     }
-  }, [token])
+  }, [])
 
-  const onRemove = (id: string) => dispatch(fetchRemovePhotoRequest(id, token))
-  const onProcess = (id: string) => dispatch(fetchProcessPhotoRequest(id, token))
+  const onRemove = (id: string) => dispatch(fetchRemovePhotoRequest(id))
+  const onProcess = (id: string) => dispatch(fetchProcessPhotoRequest(id))
 
   const onOpenModal = (record: IPhotoRequest) => {
     setRequest(record)
@@ -71,14 +67,14 @@ const Photo: React.FC = () => {
   const onDrawerClose = () => setDrawerVisible(false)
 
   const onSuccess = () => {
-    dispatch(fetchProcessPhotoRequest(id, token))
+    dispatch(fetchProcessPhotoRequest(id))
     form.resetFields()
     onDrawerClose()
   }
 
   const onFormFinish = (values: IFormValues) => {
     const { price, comment } = values
-    sendEmail(id, price, comment, token, onSuccess)
+    sendEmail(id, price, comment, onSuccess)
   }
 
   return (

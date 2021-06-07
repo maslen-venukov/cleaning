@@ -8,7 +8,7 @@
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "seed": "nodemon src/seed/seed.ts",
-    "test": "yarn jest"
+    "test": "jest"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

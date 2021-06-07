@@ -32,7 +32,7 @@ export const fetchCalcRequests = () => (dispatch: Dispatch<CalcRequestsAction>) 
     .finally(() => dispatch(setLoading(false)))
 }
 
-export const sendCalcRequest = (data: ICalcRequest, cb: () => void) => {
+export const sendCalcRequest = (data: any, cb: () => void) => {
   axios.post('/api/requests/calc', data)
     .then(() => {
       message.success('Вам на почту отправлено сообщение с описанием и стоимостью услуг', 5)
